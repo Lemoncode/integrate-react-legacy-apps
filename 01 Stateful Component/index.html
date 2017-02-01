@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Boilerplate</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h4>Add contact</h4>
+        <form id="formContact" class="form-inline">
+          <fieldset class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="txtName" class="control-label">Full name</label>
+                <input id="txtName" name="txtName" type="text" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="txtPhone" class="control-label">Phone number</label>
+                <input id="txtPhone" name="txtPhone" type="tel" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="txtEmail" class="control-label">Email</label>
+                <input id="txtEmail" name="txtEmail" type="email" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary">Create contact</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </header>
+      <main class="main">
+        <h4>My contacts</h4>
+        <div id="tableComponent"></div>
+      </main>
+    </div>
+
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <script src="./node_modules/react/dist/react.js"></script>
+    <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+
+    <script src="./assets/js/app/App.js"></script>
+    <script src="./assets/js/app/components/TableComponent.js"></script>
+    <script src="./assets/js/app/services/contactsService.js"></script>
+    <script src="./assets/js/app/modules/Contacts.js"></script>
+    <script src="./assets/js/index.js"></script>
+  </body>
+</html>
