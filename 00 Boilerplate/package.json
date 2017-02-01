@@ -1,0 +1,12 @@
+{
+  "name": "LegacyApps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Lemoncode/integrate-react-legacy-apps.git",
+  "author": "Santiago Camargo <santi.camargo@lemoncode.net>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1"
+  }
+}

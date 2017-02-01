@@ -1,0 +1,11 @@
+.header {
+  margin-top: 50px;
+}
+
+.main {
+  margin-top: 75px;
+}
+
+.form-inline .form-group > *:first-child {
+   margin: 0 5px 0 20px;
+}
