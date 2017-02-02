@@ -1,10 +1,10 @@
 (function ComponentInitializator($, React, App) {
 
-  var createCell = function createCell(type, text) {
+  var createCell = function (type, text) {
     return React.createElement(type, null, text);
   };
 
-  var createRowThead = function createRowThead() {
+  var createRowThead = function () {
     return React.createElement('tr', null,
       createCell('th', 'Name'),
       createCell('th', 'Phone number'),
@@ -12,7 +12,7 @@
     );
   };
 
-  var createRowTBody = function createRowTBody(contact, index) {
+  var createRowTBody = function (contact, index) {
     return React.createElement('tr', { key: index },
       createCell('td', contact.name),
       createCell('td', contact.phone),
@@ -20,11 +20,11 @@
     );
   };
 
-  var createThead = function createThead() {
+  var createThead = function () {
     return React.createElement('thead', null, createRowThead());
   };
 
-  var createTbody = function createTbody(contacts) {
+  var createTbody = function (contacts) {
     var rows = contacts.map(function (contact, index) {
       return createRowTBody(contact, index);
     });
@@ -32,17 +32,17 @@
   };
 
   var TableComponent = React.createClass({
-    getInitialState: function getInitialState() {
+    getInitialState: function () {
       return {
         contacts: []
       };
     },
-    loadContacts: function loadContacts(contacts) {
+    setContacts: function (contacts) {
       this.setState({
         contacts: contacts
       });
     },
-    render: function render() {
+    render: function () {
       var thead = createThead();
       var tbody = createTbody(this.state.contacts);
       return React.createElement('table', {

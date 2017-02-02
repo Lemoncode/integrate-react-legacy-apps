@@ -3,9 +3,7 @@
 
   var TableComponent = App.components.TableComponent;
   var contactsService = App.contactsService;
-  var mountedTableComponent;
-
-  var contacts;
+  var contacts, mountedTableComponent;
 
   var ContactsModule = (function () {
 
@@ -24,7 +22,7 @@
     var onSubmit = function (event) {
       event.preventDefault();
 
-      // Fetch data from form
+      // Retrieve data from form
       var contact = $(this)
         .serializeArray()
         .reduce(function (data, prop) {
@@ -35,10 +33,11 @@
       // Insert contact
       addContact(getContactObject(contact));
 
+      // Reset form controls
       this.reset();
 
       // Render table
-      mountedTableComponent.loadContacts(contacts);
+      fillReactComponentWithData(contacts);
     };
 
     var createEventHandlers = function () {
@@ -51,22 +50,21 @@
 
     // Simulates server call
     var fetchContacts = function () {
-      return contactsService.fetchContacts();
+      $.when(contactsService.fetchContacts())
+        .then(function (fetchedContacts) {
+          contacts = fetchedContacts;
+          fillReactComponentWithData(contacts);
+        });
     };
 
-    var fillReactComponentWithData = function () {
-      mountedTableComponent.loadContacts(contacts);
-    };
-
-    var loadContacts = function () {
-      contacts = fetchContacts();
+    var fillReactComponentWithData = function (contacts) {
+      mountedTableComponent.setContacts(contacts);
     };
 
     var run = function () {
-      loadContacts();
+      fetchContacts();
       createEventHandlers();
       createReactComponents();
-      fillReactComponentWithData();
     };
 
     return {
