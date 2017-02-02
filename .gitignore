@@ -7,3 +7,6 @@ typings/
 */src/**/*.js
 */src/**/*.js.map
 */coverage/
+.vscode/
+.editorconfig
+yarn.lock
