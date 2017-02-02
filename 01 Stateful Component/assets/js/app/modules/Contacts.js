@@ -37,7 +37,7 @@
       this.reset();
 
       // Render table
-      fillReactComponentWithData(contacts);
+      showContacts(contacts);
     };
 
     var createEventHandlers = function () {
@@ -45,7 +45,10 @@
     };
 
     var createReactComponents = function () {
-      mountedTableComponent = ReactDOM.render(React.createElement(TableComponent), $('#tableComponent').get(0));
+      mountedTableComponent = ReactDOM.render(
+        React.createElement(TableComponent),
+        $('#tableComponent').get(0)
+      );
     };
 
     // Simulates server call
@@ -53,11 +56,11 @@
       $.when(contactsService.fetchContacts())
         .then(function (fetchedContacts) {
           contacts = fetchedContacts;
-          fillReactComponentWithData(contacts);
+          showContacts(contacts);
         });
     };
 
-    var fillReactComponentWithData = function (contacts) {
+    var showContacts = function (contacts) {
       mountedTableComponent.setContacts(contacts);
     };
 
@@ -74,3 +77,5 @@
 
   App.Contacts = ContactsModule;
 })(jQuery, React, ReactDOM, window.App);
+
+
