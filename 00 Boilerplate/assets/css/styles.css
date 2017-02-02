@@ -9,3 +9,8 @@
 .form-inline .form-group > *:first-child {
    margin: 0 5px 0 20px;
 }
+
+table > thead > tr > th {
+  background-color: #555;
+  color: #FFF;
+}

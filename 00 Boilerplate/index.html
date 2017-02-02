@@ -15,15 +15,15 @@
             <div class="col-sm-12">
               <div class="form-group">
                 <label for="txtName" class="control-label">Full name</label>
-                <input id="txtName" name="txtName" type="text" class="form-control">
+                <input id="txtName" name="txtName" type="text" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="txtPhone" class="control-label">Phone number</label>
-                <input id="txtPhone" name="txtPhone" type="tel" class="form-control">
+                <input id="txtPhone" name="txtPhone" type="tel" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="txtEmail" class="control-label">Email</label>
-                <input id="txtEmail" name="txtEmail" type="email" class="form-control">
+                <input id="txtEmail" name="txtEmail" type="email" class="form-control" required>
               </div>
               <div class="form-group">
                 <button class="btn btn-primary">Create contact</button>
@@ -36,7 +36,7 @@
         <h4>My contacts</h4>
         <table id="tableContacts" class="table table-stripped table-bordered table-hover">
           <thead>
-            <tr class="active">
+            <tr>
               <th>Name</th>
               <th>Phone</th>
               <th>Email</th>
@@ -48,9 +48,10 @@
     </div>
 
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="./assets/js/App.js"></script>
-    <script src="./assets/js/domUtils.js"></script>
-    <script src="./assets/js/Contacts.js"></script>
+    <script src="./assets/js/app/App.js"></script>
+    <script src="./assets/js/app/helpers/domUtils.js"></script>
+    <script src="./assets/js/app/services/contactsService.js"></script>
+    <script src="./assets/js/app/modules/Contacts.js"></script>
     <script src="./assets/js/index.js"></script>
   </body>
 </html>

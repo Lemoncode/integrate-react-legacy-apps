@@ -1,20 +1,12 @@
-(function ($, App, domUtils) {
+(function ($, App) {
   'use strict';
 
-  var table = '#tableContacts';
+  var domUtils = App.domUtils;
+  var contactsService = App.contactsService;
+
   var Contacts = (function () {
-    var contacts = [
-      {
-        name: 'Santi',
-        phone: 655322454,
-        email: 'santi.camargo@lemoncode.net'
-      },
-      {
-        name: 'Gus',
-        phone: 652464604,
-        email: 'sanfemar@msn.com'
-      },
-    ];
+    var table = '#tableContacts';
+    var contacts;
 
     var getContactObject = function (contact) {
       return {
@@ -42,24 +34,33 @@
       // Insert contact
       addContact(getContactObject(contact));
 
+      // Reset form fields
       this.reset();
 
       // Render table
-      domUtils.renderTable(contacts, table);
+      showContacts(contacts);
     };
+
     var createEventHandlers = function () {
       $('#formContact').submit(onSubmit);
     };
+
     var run = function () {
+      fetchContacts();
       createEventHandlers();
-      loadContacts();
     };
 
-    var getContacts = function () {
-      return contacts;
+    // Simulates server call
+    var fetchContacts = function () {
+      $.when(contactsService.fetchContacts())
+        .then(function (fetchedContacts) {
+          contacts = fetchedContacts;
+          showContacts(contacts);
+        });
     };
 
-    var loadContacts = function () {
+    // Render table
+    var showContacts = function (contacts) {
       domUtils.renderTable(contacts, table);
     };
 
@@ -69,4 +70,4 @@
   })();
 
   App.Contacts = Contacts;
-})(jQuery, window.App, window.App.domUtils);
+})(jQuery, window.App);
