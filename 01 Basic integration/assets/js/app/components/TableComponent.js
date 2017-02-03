@@ -32,25 +32,13 @@
     return React.createElement('tbody', null, rows);
   };
 
-  var TableComponent = React.createClass({
-    getInitialState: function () {
-      return {
-        contacts: []
-      };
-    },
-    setContacts: function (contacts) {
-      this.setState({
-        contacts: contacts
-      });
-    },
-    render: function () {
-      return React.createElement('table',
-        { className: 'table table-stripped table-bordered table-hover' },
-        createThead(),
-        createTbody(this.state.contacts)
-      );
-    }
-  });
+  var TableComponent = function (props) {
+    return React.createElement('table',
+      { className: 'table table-stripped table-bordered table-hover' },
+      createThead(),
+      createTbody(props.contacts || [])
+    );
+  }
 
   App.components.TableComponent = TableComponent;
 })(React, window.App);

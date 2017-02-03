@@ -1,4 +1,4 @@
-# 01 Stateful Components
+# 01 Basic interaction
 
 In this sample we will introduce our first React component. This component will hold the contacts array in its state and use it to render the table.
 
@@ -69,6 +69,8 @@ Let's write our React `TableComponent`, first we'll create a `components` folder
 │       └── index.js
 └── index.html
 ```
+
+## Defining our table component
 
 Let's write our React `TableComponent`. This will need two dependencies, React to be created and App to be exposed so we'll define our component and wrap it in an _IIFE _(Immediately Invoked Function Expression) and pass this dependencies. Then we'll declare our `TableComponent` inside with three main methods:
 
@@ -155,7 +157,7 @@ To create the table we'll create some private methods to render the table:
   ...
   ```
 
-- We'll finish the table body creation with a `createTbody` method that will returns the '<tbody>'. This method will need an array of contacts:
+- We'll finish the table body creation with a `createTbody` method that will returns the `<tbody>` This method will need an array of contacts:
 
   ```javascript
   ...
@@ -198,9 +200,11 @@ To create the table we'll create some private methods to render the table:
   </html>
   ```
 
+## Setting up communication
+
 Let's jump into our `Contacts.js` module and make some changes:
 
-- First we'll  incude our `TableComponent` as a private variable to keep track of the mounted instance, we'll also import React and ReactDOM as dependencies.
+- First we'll  incude our `TableComponent` and import React and ReactDOM as dependencies.
 
 ```javascript
 (function($, React, ReactDOM, App) {
@@ -208,47 +212,10 @@ Let's jump into our `Contacts.js` module and make some changes:
 
   var TableComponent = App.components.TableComponent;
   var contactsService = App.contactsService;
-  var contacts, mountedTableComponent;
 
 ...
 })(jQuery, React, ReactDOM, window.App);
 ```
 
-- Then create a method called `createReactComponents`that will mount our component and call it in `run` method:
-
-```javascript
-...
-var createEventHandlers = function () {
-  $('#formContact').submit(onSubmit);
-};
-
-var createReactComponents = function () {
-  mountedTableComponent = ReactDOM.render(
-    React.createElement(TableComponent),
-    $('#tableComponent').get(0)
-  );
-};
-
-...
-
-var run = function () {
-  fetchContacts();
-  createEventHandlers();
-  createReactComponents();
-};
-...
-```
-
-- Let's change the `showContacts` method to change the `TableComponent` state with the contacts:
-
-```javascript
-...
-var showContacts = function (contacts) {
-  mountedTableComponent.setContacts(contacts);
-};
-
-var run = function () {
-...
-```
 
 Finally after all this changes, we should get our `TableComponent` integrated in our jQuery app.
