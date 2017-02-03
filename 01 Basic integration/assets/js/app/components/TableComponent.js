@@ -1,4 +1,4 @@
-(function ComponentInitializator(React, App) {
+(function (React, App) {
   'use strict';
 
   var createCell = function (type, text) {
