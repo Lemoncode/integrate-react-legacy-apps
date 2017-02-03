@@ -2,7 +2,7 @@
 
 ## Description
 
-This sample shows a simple and basic implementation of an address book app created using jQuery and ECMAScript5. This little app uses a form to ask for some data and then load in a table.
+This sample shows a simple and basic implementation of an address book app created using jQuery and ECMAScript5. This little app rendes a simple table of contacts fetched from an API (mocked).
 App is structured as follows:
 
 ```
@@ -20,11 +20,8 @@ App is structured as follows:
 
 ## How it works?
 
-When DOM is loaded our `index.js` file loads the `run` method of our `Contacts` module. This method is responsible of setting event handlers for our application. When user fills data and submit the form an `onSubmit` event is triggered leading to:
-
-- Collect contact data from form.
-- Adapt contact data to desired object with _name_, _phone_ and _email_ properties.
-- Insert this new contact into our contact list.
-- Render the table to show the new contact.
+ 1. When DOM is loaded our `index.js` file loads the `run` method of our `Contacts` module.
+ 2. This method calls `fetchContacts` that calls our `contactsService` to get an array of contacts.
+ 3. When the call is completed then `showContacts` is called to use `domUtils` to create and render the table.
 
 In next examples we will see how to integrate React and change some jQuery components into React components.

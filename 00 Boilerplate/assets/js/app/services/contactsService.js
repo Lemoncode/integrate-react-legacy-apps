@@ -21,7 +21,7 @@
       var deferred = $.Deferred();
       window.setTimeout(function () {
         deferred.resolve(contacts);
-      }, 100);
+      }, 600);
       return deferred;
     };
 
