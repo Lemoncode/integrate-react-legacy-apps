@@ -40,13 +40,18 @@
       showContacts(contacts);
     };
 
-    var createEventHandlers = function () {
-      $('#formContact').submit(onSubmit);
-    };
 
     var createReactComponents = function () {
       $mountedTableComponent = $('#tableComponent');
       $mountedTableComponent.react(TableComponent, null);
+    };
+
+    var showContacts = function (contacts, callback) {
+      $mountedTableComponent.react(TableComponent, { contacts: contacts }, callback);
+    };
+
+    var createEventHandlers = function () {
+      $('#formContact').submit(onSubmit);
     };
 
     // Simulates server call
@@ -56,10 +61,6 @@
           contacts = fetchedContacts;
           showContacts(contacts);
         });
-    };
-
-    var showContacts = function (contacts, callback) {
-      $mountedTableComponent.react(TableComponent, { contacts: contacts }, callback);
     };
 
     var run = function () {
