@@ -41,10 +41,10 @@
       };
     },
     componentDidMount: function () {
-      $.observe('contacts').subscribe(this.onAddContact);
+      $.observe('addContacts').subscribe(this.onAddContact);
     },
     componentWillUnmount: function () {
-      $.observe('contacts').unsubscribe(this.onAddContact);
+      $.observe('addContacts').unsubscribe(this.onAddContact);
     },
     render: function () {
       return React.createElement('table',

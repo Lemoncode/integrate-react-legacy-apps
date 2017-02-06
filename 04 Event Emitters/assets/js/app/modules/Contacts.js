@@ -30,7 +30,7 @@
       event.preventDefault();
 
       // Retrieve data from form
-      var rawContact = $(this)
+      var contact = $(this)
         .serializeArray()
         .reduce(function (data, prop) {
           data[prop.name] = prop.value;
@@ -38,14 +38,14 @@
         }, {});
 
       // Insert contact
-      var contact = getContactObject(rawContact);
+      contact = getContactObject(contact);
       addContact(contact);
 
       // Reset form controls
       this.reset();
 
-      // Fire event with new contact
-      $.observe('contacts').publish(contact);
+      // Fire notification with new contact
+      $.observe('addContacts').publish(contact);
     };
 
     var createEventHandlers = function () {
@@ -57,7 +57,7 @@
       $.when(contactsService.fetchContacts())
         .then(function (fetchedContacts) {
           contacts = fetchedContacts;
-          $.observe('contacts').publish(contacts);
+          $.observe('addContacts').publish(contacts);
         });
     };
 
