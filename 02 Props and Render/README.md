@@ -182,6 +182,6 @@ var run = function () {
 
 1. When page loads `Contacts.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` with an empty array.
 
-2. `TableComponent`is mounted stored under `$mountedTableComponent` and render the table header. When `fetchContacts` is completed `TableComponent` is remounted with new contacts (React diffs the current table with the new rendered table and renders only the `<tbody>`).
+2. `TableComponent` jQuery selector is stored in  `$mountedTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `TableComponent` is remounted with new contacts (React diffs the current table with the new rendered table and renders only the `<tbody>`).
 
 3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `contacts` is passed to `showContacts`, remounting the `TableComponent` and rendering last `<tr>` into the DOM.
