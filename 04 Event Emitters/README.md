@@ -59,15 +59,15 @@ This sample takes as starting point sample _03 Stateful Components_.
 
 - Then we can add `jquery-pub-sub.js` to our `index.html` file:
 
-```html
-...
-<script src="./node_modules/react-dom/dist/react-dom.js"></script>
+  ```html
+  ...
+  <script src="./node_modules/react-dom/dist/react-dom.js"></script>
 
-<script src="./assets/js/app/plugins/jquery-pub-sub.js"></script>
+  <script src="./assets/js/app/plugins/jquery-pub-sub.js"></script>
 
-<script src="./assets/js/app/App.js"></script>
-...
-```
+  <script src="./assets/js/app/App.js"></script>
+  ...
+  ```
 
 ## Publishing contact
 
