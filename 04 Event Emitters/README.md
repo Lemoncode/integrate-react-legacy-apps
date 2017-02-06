@@ -85,6 +85,7 @@ Let's change the `Contacts.js` module implementation to use Pub/Sub pattern:
     
     App.Contacts = ContactsModule;
   })(jQuery, React, ReactDOM, window.App);
+  ```
 
 - Next we'll remove `$mountedTableComponent` variable and change `createReactComponents` method definition. We'll also remove `showContacts` method:
 
@@ -153,29 +154,29 @@ Subscribing our `TableComponent` to a subject is pretty straightforward:
 
 - First we'll need to add `jQuery` to its dependencies:
 
-```javascript
-(function ComponentInitializator($, React, App) {
-  'use strict';
+  ```javascript
+  (function ComponentInitializator($, React, App) {
+    'use strict';
 
-...
+  ...
 
-  App.components.TableComponent = TableComponent;
-})(jQuery, React, window.App);
-```
+    App.components.TableComponent = TableComponent;
+  })(jQuery, React, window.App);
+  ```
 
--  Next we'll create a method to handle new contacts through subscription to `contacts` subject and set it in it's state:
+- Next we'll create a method to handle new contacts through subscription to `contacts` subject and set it in it's state:
 
-```javascript
-...
-var TableComponent = React.createClass({
-  onAddContact: function (contact) {
-    this.setState({
-      contacts: this.state.contacts.concat(contact)
-    });
-  },
-  getInitialState: function () {
-...
-```
+  ```javascript
+  ...
+  var TableComponent = React.createClass({
+    onAddContact: function (contact) {
+      this.setState({
+        contacts: this.state.contacts.concat(contact)
+      });
+    },
+    getInitialState: function () {
+  ...
+  ```
 
 - Then we need to define two React lifecycles methods, with `componentDidMount` we'll subscribe to `contacts` subject and `componentWillUnmount` will be used to unsubscribe the component from the subject:
 
@@ -184,7 +185,7 @@ var TableComponent = React.createClass({
   },
   componentDidMount: function () {
     $.observe('addContacts').subscribe(this.onAddContact);
-   },
+  },
   componentWillUnmount: function () {
     $.observe('addContacts').unsubscribe(this.onAddContact);
   },
