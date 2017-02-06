@@ -5,29 +5,26 @@
     return React.createElement(type, null, text);
   };
 
-  var createTheadRow = function () {
-    return React.createElement('tr', null,
-      createCell('th', 'Name'),
-      createCell('th', 'Phone number'),
-      createCell('th', 'Email')
+  var createRow = function (cell, index, contact) {
+    return React.createElement('tr', { key: index },
+      createCell(cell, contact.name),
+      createCell(cell, contact.phone),
+      createCell(cell, contact.email)
     );
   };
 
   var createThead = function () {
-    return React.createElement('thead', null, createTheadRow());
-  };
-
-  var createTbodyRow = function (contact, index) {
-    return React.createElement('tr', { key: index },
-      createCell('td', contact.name),
-      createCell('td', contact.phone),
-      createCell('td', contact.email)
-    );
+    var contactTemplate = {
+      name: 'Name',
+      phone: 'Phone number',
+      email: 'Email'
+    };
+    return React.createElement('thead', null, createRow('th', null, contactTemplate));
   };
 
   var createTbody = function (contacts) {
     var rows = contacts.map(function (contact, index) {
-      return createTbodyRow(contact, index);
+      return createRow('td', index, contact);
     });
     return React.createElement('tbody', null, rows);
   };
