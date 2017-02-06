@@ -2,6 +2,7 @@
   'use strict';
 
   var contactsService = (function () {
+    var REQUEST_DELAY = 600;
     var contacts = [{
       name: 'Jose C. Thomson',
       phone: 915797511,
@@ -17,11 +18,12 @@
       phone: 660892268,
       email: 'flooreb@aol.com'
     }];
+
     var fetchContacts = function () {
       var deferred = $.Deferred();
       window.setTimeout(function () {
         deferred.resolve(contacts);
-      }, 600);
+      }, REQUEST_DELAY);
       return deferred;
     };
 
