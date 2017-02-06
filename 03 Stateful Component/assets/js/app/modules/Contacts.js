@@ -7,9 +7,12 @@
 
   var ContactsModule = (function () {
 
-
     var createReactComponents = function () {
       $mountedTableComponent = $('#tableComponent').react(TableComponent, null);
+    };
+
+    var showContacts = function (contacts, callback) {
+      $mountedTableComponent.setState({ contacts: contacts });
     };
 
     var getContactObject = function (contact) {
@@ -42,7 +45,7 @@
       this.reset();
 
       // Render table
-      $mountedTableComponent.setState({ contacts: contacts });
+      showContacts(contacts);
     };
 
     var createEventHandlers = function () {
@@ -54,7 +57,7 @@
       $.when(contactsService.fetchContacts())
         .then(function (fetchedContacts) {
           contacts = fetchedContacts;
-          $mountedTableComponent.setState({ contacts: fetchedContacts });
+          showContacts(contacts);
         });
     };
 
