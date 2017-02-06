@@ -1,8 +1,8 @@
 (function ($) {
   var subjects = {};
-  $.observer = (function () {
+  $.observe = (function () {
     return function (id) {
-      var callbacks, method;
+      var callbacks;
       var subject = id && subjects[id];
 
       if (!subject) {

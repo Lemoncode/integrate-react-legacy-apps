@@ -45,7 +45,7 @@
       this.reset();
 
       // Fire event with new contact
-      $.observer('contacts').publish(contact);
+      $.observe('contacts').publish(contact);
     };
 
     var createEventHandlers = function () {
@@ -57,7 +57,7 @@
       $.when(contactsService.fetchContacts())
         .then(function (fetchedContacts) {
           contacts = fetchedContacts;
-          $.observer('contacts').publish(contacts);
+          $.observe('contacts').publish(contacts);
         });
     };
 
