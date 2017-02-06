@@ -14,7 +14,6 @@
     };
 
     var showContacts = function (contacts, callback) {
-      console.log('showing contacts', contacts);
       $mountedTableComponent.react(TableComponent, { contacts: contacts || [] }, callback);
     };
 
