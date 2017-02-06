@@ -7,16 +7,27 @@
 
   var ContactsModule = (function () {
 
+
+    var createReactComponents = function () {
+      $mountedTableComponent = $('#tableComponent');
+      showContacts(null);
+    };
+
+    var showContacts = function (contacts, callback) {
+      console.log('showing contacts', contacts);
+      $mountedTableComponent.react(TableComponent, { contacts: contacts || [] }, callback);
+    };
+
     var getContactObject = function (contact) {
       return {
-        name: contact.txtName,
-        phone: contact.txtPhone,
-        email: contact.txtEmail
+        name: contact.txtName || null,
+        phone: contact.txtPhone || null,
+        email: contact.txtEmail || null
       };
     };
 
     var addContact = function (contact) {
-      contacts.push(contact);
+      contacts = contacts.concat([contact]);
     };
 
     var onSubmit = function (event) {
@@ -38,16 +49,6 @@
 
       // Render table
       showContacts(contacts);
-    };
-
-
-    var createReactComponents = function () {
-      $mountedTableComponent = $('#tableComponent');
-      $mountedTableComponent.react(TableComponent, null);
-    };
-
-    var showContacts = function (contacts, callback) {
-      $mountedTableComponent.react(TableComponent, { contacts: contacts }, callback);
     };
 
     var createEventHandlers = function () {

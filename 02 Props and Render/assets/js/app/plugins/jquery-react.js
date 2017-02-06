@@ -1,4 +1,6 @@
 (function ($, React, ReactDOM) {
+  'use strict';
+
   $.fn.extend({
     react: function (component, props, callback) {
       var mountedComponent = ReactDOM.render(
