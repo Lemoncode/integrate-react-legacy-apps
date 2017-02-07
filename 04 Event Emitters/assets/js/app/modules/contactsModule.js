@@ -1,11 +1,11 @@
-(function ($, React, ReactDOM, App) {
+(function initializeContactsModule($, React, ReactDOM, App) {
   'use strict';
 
   var TableComponent = App.components.TableComponent;
   var contactsService = App.contactsService;
   var contacts;
 
-  var ContactsModule = (function () {
+  var contactsModule = (function () {
 
     var createReactComponents = function () {
       ReactDOM.render(
@@ -28,9 +28,10 @@
 
     var onSubmit = function (event) {
       event.preventDefault();
+      var form = event.currentTarget;
 
       // Retrieve data from form
-      var contact = $(this)
+      var contact = $(form)
         .serializeArray()
         .reduce(function (data, prop) {
           data[prop.name] = prop.value;
@@ -42,7 +43,7 @@
       addContact(contact);
 
       // Reset form controls
-      this.reset();
+      form.reset();
 
       // Fire notification with new contact
       $.observe('addContacts').publish(contact);
@@ -72,7 +73,7 @@
     };
   })();
 
-  App.Contacts = ContactsModule;
+  App.contactsModule = contactsModule;
 })(jQuery, React, ReactDOM, window.App);
 
 

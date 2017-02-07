@@ -19,7 +19,7 @@ This sample takes as starting point sample _03 Stateful Components_.
   │       │   ├── components
   │       │   │   └── TableComponent.js
   │       │   ├── modules
-  │       │   │   └── Contacts.js
+  │       │   │   └── contactsModule.js
   │       │   ├── plugins
   │       │   │   └── jquery-pub-sub.js
   │       │   └── services
@@ -32,7 +32,7 @@ This sample takes as starting point sample _03 Stateful Components_.
 - Then let's define our Pub/Sub implementation, we'll create an object containing all subjects and wrap `jQuery.Callbacks()` when subject don't exist:
 
   ```javascript
-  (function ($) {
+  (function initializejQueryPubSub($) {
     var subjects = {};
     $.observer = (function () {
       return function (id) {
@@ -71,19 +71,19 @@ This sample takes as starting point sample _03 Stateful Components_.
 
 ## Publishing contact
 
-Let's change the `Contacts.js` module implementation to use Pub/Sub pattern:
+Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
 
 - First, we'll add React and ReactDOM to our module dependencies:
 
   ```javascript
-  (function ($, React, ReactDOM, App) {
+  (function initializeContactsModule($, React, ReactDOM, App) {
     'use strict';
 
     var TableComponent = App.components.TableComponent;
-    
+
     ...
-    
-    App.Contacts = ContactsModule;
+
+    App.contactsModule = contactsModule;
   })(jQuery, React, ReactDOM, window.App);
   ```
 
@@ -94,7 +94,7 @@ Let's change the `Contacts.js` module implementation to use Pub/Sub pattern:
   var contactsService = App.contactsService;
   var contacts;
 
-  var ContactsModule = (function () {
+  var contactsModule = (function () {
 
     var createReactComponents = function () {
       ReactDOM.render(
@@ -155,7 +155,7 @@ Subscribing our `TableComponent` to a subject is pretty straightforward:
 - First we'll need to add `jQuery` to its dependencies:
 
   ```javascript
-  (function ComponentInitializator($, React, App) {
+  (function initializeTableComponent($, React, App) {
     'use strict';
 
   ...
@@ -195,7 +195,7 @@ Subscribing our `TableComponent` to a subject is pretty straightforward:
 
 ## How it works?
 
-1. When page loads `Contacts.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts and renders the table header.
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts and renders the table header.
 
 2. When `fetchContacts` is completed we fire the subject `addContacts`  with the new contacts and `TableComponent` gets notified, calling `onAddContact` method that changes its state via `setState` with new contacts. This triggers React component lifecycles and results in rendering `<tbody>` with the contacts information.
 

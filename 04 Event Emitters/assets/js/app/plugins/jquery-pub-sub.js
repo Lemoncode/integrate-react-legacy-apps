@@ -1,4 +1,4 @@
-(function ($) {
+(function initializejQueryPubSub($) {
   var subjects = {};
   $.observe = (function () {
     return function (id) {
