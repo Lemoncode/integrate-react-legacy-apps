@@ -40,7 +40,7 @@ Then we'll remove`domUtils.js` helper as we only needed it to render the table. 
 After that we will create a namespace called `components` inside our `App.js` to hold our React components:
 
 ```javascript
-(function (window) {
+(function initializeApp(window) {
   'use strict';
 
   var App = {};
@@ -63,7 +63,7 @@ Let's write our React `TableComponent`, first we'll create a `components` folder
 │       │   ├── components
 │       │   │   └── TableComponent.js
 │       │   ├── modules
-│       │   │   └── Contacts.js
+│       │   │   └── contactsModule.js
 │       │   └── services
 │       │       └── contactsService.js
 │       └── index.js
@@ -72,15 +72,11 @@ Let's write our React `TableComponent`, first we'll create a `components` folder
 
 ## Defining our table component
 
-Let's write our React `TableComponent`. This will need two dependencies, React to be created and App to be exposed so we'll define our component and wrap it in an _IIFE _(Immediately Invoked Function Expression) and pass this dependencies. Then we'll declare our `TableComponent` inside with three main methods:
-
-- `getInitialState`: This will initialize contacts array.
-- `setContacts`:  This method will bridge jQuery and our component.
-- `render`:  The main method to render the table
+Let's write our React `TableComponent`. This will need two dependencies, React to be created and App to be exposed so we'll define our component and wrap it in an _IIFE _(Immediately Invoked Function Expression) and pass this dependencies:
 
 ```javascript
 // TableComponent.js
-(function(React, App) {
+(function initializeTableComponent(React, App) {
   'use strict';
 
   var TableComponent = React.createClass({
@@ -89,11 +85,6 @@ Let's write our React `TableComponent`. This will need two dependencies, React t
         contacts: []
       };
     },
-    setContacts: function (contacts) {
-      this.setState({
-        contacts: contacts
-      });
-    },
     render: function () { }
   });
 
@@ -101,7 +92,7 @@ Let's write our React `TableComponent`. This will need two dependencies, React t
 })(React, window.App);
 ```
 
-To create the table we'll create some private methods to render the table:
+To create the table we're going to add some private methods:
 
 - Let's create a `createCell` method with two parameters, **type** that will be a table cell `<td>` or `<th>`, and **text** that will show the content of the cell. This method will return a `ReactElement`:
 
@@ -130,9 +121,10 @@ To create the table we'll create some private methods to render the table:
   var TableComponent = React.createClass({
   ...
   ```
-- Let's create the `createThead` method that returns a `<thead>` React element. This will call `createRow` method passing it the template and `null` props as it's there will be only one `<tr>`:
 
-  ```javscript
+- Let's create the `createHead` method that returns a `<thead>` React element. This will call `createRow` method passing it the template with `null` props as it's there will be only one `<tr>`:
+
+  ```javascript
   ...
   var createThead = function () {
     var contactTemplate = {
@@ -147,26 +139,11 @@ To create the table we'll create some private methods to render the table:
   ...
   ```
 
-- Time to create the `<tbody>`, let's create a method called `createTbody` that will create a row with contacts data. This method will need to iterate overa **contact** object to create each cell with contact information, and a **index** as there can be multiple contacts table and React needs to track each child with a `key` prop:
-
-  ```javascript
-  var createTbodyRow = function (contact, index) {
-    return React.createElement('tr', { key: index },
-      createCell('td', contact.name),
-      createCell('td', contact.phone),
-      createCell('td', contact.email)
-    );
-  };
-
-  var TableComponent = React.createClass({
-  ...
-  ```
-
 - Time to create the `<tbody>`,  let's write a `createTbody` method that will returns the `<tbody>` This method will need an array of contacts:
 
   ```javascript
   ...
-  var createTbody = function (contacts) {
+  var createBody = function (contacts) {
     var rows = contacts.map(function (contact, index) {
       return createRow('td', index, contact);
     });
@@ -183,11 +160,11 @@ To create the table we'll create some private methods to render the table:
   ...
   },
   render: function () {
-    var thead = createThead();
-    var tbody = createTbody(this.state.contacts);
-    return React.createElement('table', {
-      className: 'table table-stripped table-bordered table-hover'
-    }, thead, tbody);
+    return React.createElement('table',
+      { className: 'table table-stripped table-bordered table-hover' },
+      createHead(),
+      createBody(this.state.contacts)
+    );
   }
   ...
   ```
@@ -199,7 +176,7 @@ To create the table we'll create some private methods to render the table:
       <script src="./assets/js/app/App.js"></script>
       <script src="./assets/js/app/components/TableComponent.js"></script>
       <script src="./assets/js/app/services/contactsService.js"></script>
-      <script src="./assets/js/app/modules/Contacts.js"></script>
+      <script src="./assets/js/app/modules/contactsModule.js"></script>
       <script src="./assets/js/index.js"></script>
     </body>
   </html>
@@ -207,12 +184,12 @@ To create the table we'll create some private methods to render the table:
 
 ## Setting up communication
 
-Let's jump into our `Contacts.js` module and make some changes:
+Let's jump into our `contactsModule.js` and make some changes:
 
 - First we'll  incude our `TableComponent` and import React and ReactDOM as dependencies. Then we'll remove the reference to `domUtils` and add the `TableComponent`:
 
   ```javascript
-  (function($, React, ReactDOM, App) {
+  (function initializeContactsModule($, React, ReactDOM, App) {
     'use strict';
 
     var TableComponent = App.components.TableComponent;
@@ -240,3 +217,10 @@ Let's jump into our `Contacts.js` module and make some changes:
   ```
 
 After all this changes, we should get our `TableComponent` integrated in our jQuery app.
+
+
+## How it works?
+
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts.
+
+2. When `fetchContacts` is completed `TableComponent` is mounted with the new contacts. This results in rendering the table with contacts.
