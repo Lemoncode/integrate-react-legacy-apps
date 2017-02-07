@@ -1,10 +1,10 @@
-(function ($, React, ReactDOM, App) {
+(function initializeContactsModule($, React, ReactDOM, App) {
   'use strict';
 
   var TableComponent = App.components.TableComponent;
   var contactsService = App.contactsService;
 
-  var ContactsModule = (function () {
+  var contactsModule = (function () {
 
     // Simulates server call
     var fetchContacts = function () {
@@ -28,7 +28,7 @@
     };
   })();
 
-  App.Contacts = ContactsModule;
+  App.contactsModule = contactsModule;
 })(jQuery, React, ReactDOM, window.App);
 
 

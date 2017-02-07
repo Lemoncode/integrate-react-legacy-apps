@@ -1,4 +1,4 @@
-(function (window) {
+(function initializeApp(window) {
   'use strict';
 
   var App = {};
