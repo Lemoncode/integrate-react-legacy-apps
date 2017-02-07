@@ -25,8 +25,8 @@ Let's begin changing `TableComponent` implementation to not accept props and set
   render: function () {
     return React.createElement('table',
       { className: 'table table-stripped table-bordered table-hover' },
-      createThead(),
-      createTbody(this.state.contacts)
+      createHead(),
+      createBody(this.state.contacts)
     );
   },
   ```
@@ -54,7 +54,7 @@ There are few changes to do in `Contacts` module:
 
 ## How it works?
 
-1. When page loads `Contacts.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts.
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts.
 
 2. `TableComponent` mounted component is stored in  `$mountedTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `TableComponent` changes its state via `setState` with new contacts. This triggers React component lifecycles and results in rendering `<tbody>` with the contacts information.
 

@@ -1,4 +1,4 @@
-(function ComponentInitializator(React, App) {
+(function initializeTableComponent(React, App) {
   'use strict';
 
   var createCell = function (type, text) {
@@ -13,7 +13,7 @@
     );
   };
 
-  var createThead = function () {
+  var createHead = function () {
     var contactTemplate = {
       name: 'Name',
       phone: 'Phone number',
@@ -22,7 +22,7 @@
     return React.createElement('thead', null, createRow('th', null, contactTemplate));
   };
 
-  var createTbody = function (contacts) {
+  var createBody = function (contacts) {
     var rows = contacts.map(function (contact, index) {
       return createRow('td', index, contact);
     });
@@ -38,8 +38,8 @@
     render: function () {
       return React.createElement('table',
         { className: 'table table-stripped table-bordered table-hover' },
-        createThead(),
-        createTbody(this.state.contacts)
+        createHead(),
+        createBody(this.state.contacts)
       );
     },
   });
