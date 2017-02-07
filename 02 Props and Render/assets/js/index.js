@@ -1,7 +1,7 @@
-(function ($, App) {
+(function initializeMain($, App) {
   'use strict';
 
   $(function main() {
-    App.Contacts.run();
+    App.contactsModule.run();
   });
 })(jQuery, window.App);

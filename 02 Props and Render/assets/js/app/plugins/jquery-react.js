@@ -1,4 +1,4 @@
-(function ($, React, ReactDOM) {
+(function initializejQueryReactPlugin($, React, ReactDOM) {
   'use strict';
 
   $.fn.extend({

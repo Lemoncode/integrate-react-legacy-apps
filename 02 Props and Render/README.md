@@ -42,9 +42,9 @@ Let's begin by adding the form in our `index.hml` file right inside the `<header
 To use React inside jQuery we could create a custom method extended from `jQuery.prototype` called **react** that receives a component definition, some properties and an optional callback and return the mounted component. This is useful if we need to remount a component that receive new props. Let's create this `react` method in a new filed called `jquery-react.js` under a new folder `plugins`:
 
 ```javascript
-(function ($, React, ReactDOM) {
+(function initializejQueryReactPlugin($, React, ReactDOM) {
   'use strict';
-  
+
   $.fn.extend({
     react: function (component, props, callback) {
       var mountedComponent = ReactDOM.render(
@@ -72,21 +72,21 @@ Then add `jquery-react.js` in our `index.html`file:
 ...
 ```
 
-## Refactoring `Contacts` module
+## Refactoring `contactsModule`
 
-We need to do some changes to `Contacts` module to add event handling and storing the new contacts added so they can be passed to the `TableComponent` :
+We need to do some changes to `contactsModule` to add event handling and storing the new contacts added so they can be passed to the `TableComponent` :
 
 - First let's declare two variables, **contacts** to store all contacts and **$mountedTableComponent** to keep cached our mounted component.
 
   ```javascript
-  (function ($, App) {
+  (function initializeContactsModule($, App) {
     'use strict';
 
     var TableComponent = App.components.TableComponent;
     var contactsService = App.contactsService;
     var contacts, $mountedTableComponent;
 
-    var ContactsModule = (function () {
+    var contactsModule = (function () {
   ```
 
 - Then we need to create a mehthod to add an `onSubmit` our new form, let's call it `createEventHandlers`:
@@ -107,9 +107,10 @@ We need to do some changes to `Contacts` module to add event handling and storin
   ```javascript
   var onSubmit = function (event) {
     event.preventDefault();
+    var form = event.currentTarget;
 
     // Retrieve data from form
-    var contact = $(this)
+    var contact = $(form)
       .serializeArray()
       .reduce(function (data, prop) {
         data[prop.name] = prop.value;
@@ -120,7 +121,7 @@ We need to do some changes to `Contacts` module to add event handling and storin
     addContact(getContactObject(contact));
 
     // Reset form controls
-    this.reset();
+    form.reset();
 
     // Render table
     showContacts(contacts);
@@ -180,7 +181,7 @@ var run = function () {
 
 ## How it works?
 
-1. When page loads `Contacts.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` with an empty array.
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` with an empty array.
 
 2. `TableComponent` jQuery selector is stored in  `$mountedTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `TableComponent` is remounted with new contacts (React diffs the current table with the new rendered table and renders only the `<tbody>`).
 
