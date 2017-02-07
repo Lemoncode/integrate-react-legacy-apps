@@ -1,4 +1,4 @@
-(function main($, App) {
+(function initializeMain($, App) {
   'use strict';
 
   $(function main() {
