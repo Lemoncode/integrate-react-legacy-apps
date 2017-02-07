@@ -2,6 +2,6 @@
   'use strict';
 
   $(function main() {
-    App.Contacts.run();
+    App.contactsModule.run();
   });
 })(jQuery, window.App);

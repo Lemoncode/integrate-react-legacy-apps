@@ -33,7 +33,7 @@ Let's begin changing `TableComponent` implementation to not accept props and set
 
 ## Setting component state
 
-There are few changes to do in `Contacts` module:
+There are few changes to do in `contactsModule`:
 
 - First we'll change `createReactComponents` method as we don't need to store the `#tableComponent` selector anymore so we'll store instead the mounted component:
 

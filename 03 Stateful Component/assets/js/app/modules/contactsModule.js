@@ -73,7 +73,7 @@
     };
   })();
 
-  App.Contacts = contactsModule;
+  App.contactsModule = contactsModule;
 })(jQuery, window.App);
 
 
