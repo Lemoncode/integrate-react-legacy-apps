@@ -42,7 +42,7 @@ Using JSX syntax is not mandatory, however it has some advantages like better re
 })(React, window.App);
 ```
 
-JSX allows us to write components using less lines of code with HTML syntax and this is easier to visualize the generated HTML. Let's see how would looks  the above `createRow` method using JSX syntax:
+JSX allows us to write components using fewer lines of code, and obtain a better visualization of them thanks to the HTML like syntax. Let's see how would looks  the above `createRow` method using JSX syntax:
 
 ```jsx
 var createRow = function (contact, index) {
@@ -60,12 +60,11 @@ var createRow = function (contact, index) {
 
 ## Installing dependencies
 
-We've just seen how easy to write JSX syntax is, however, JSX is not supported by browsers so, to use it we need a middle step, that is _transpilation_. We need an interpreter that transforms JSX to JavaScript like [babel](https://babeljs.io). Babel has an built-in CLI which can be used to compile files from the command line. However when we make some changes to our `.jsx` files we need to use `babel` to transform them to `.js`. To automatize this and speed our development workflow we'll install a task manager that will run `babel` and _transpile_ our `.jsx` files when we make some changes. Let's install [Gulp 4](), open a command line prompt, locate yourself in the root folder of the project and execute:
+We just checked how easy is to write JSX syntax, however, JSX is not supported by browsers so, to use it we need a middle step, that is _transpilation_. We need an interpreter that transforms JSX to JavaScript like [babel](https://babeljs.io). Babel has an built-in CLI which can be used to compile files from the command line. However when we make some changes to our `.jsx` files we need to use `babel` to transform them to `.js`. To automatize this and speed our development workflow we'll install a task manager that will run `babel` and _transpile_ our `.jsx` files when we make some changes. Let's install [Gulp 4](http://gulpjs.com), open a command line prompt, locate yourself in the root folder of the project and execute:
 
 ```shell
 npm install --save-dev gulpjs/gulp#4.0 gulp-babel babel-preset-react del
 ```
-
 
 ### Project structure
 
@@ -153,7 +152,8 @@ Finally we'll add to our `package.json` a build task that call Gulp and start th
 ```json
 ...
 "scripts": {
-  "build": "gulp"
+  "build": "gulp build",
+  "build:watch": "gulp"
 },
 "dependencies": {
   "bootstrap": "^3.3.7",
@@ -269,4 +269,4 @@ With these changes we only need to open a command line prompt and type `npm run 
       └── index.js
   ```
 
-To see the example working open `index.html` in a browser.
+To see the example working open `index.html` in a browser. If we need to do more changes just run `npm run build:watch` and it will automatically copy and transpile files.

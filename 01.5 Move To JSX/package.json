@@ -6,7 +6,8 @@
   "author": "Santiago Camargo <santi.camargo@lemoncode.net>",
   "license": "MIT",
   "scripts": {
-    "build": "gulp"
+    "build": "gulp build",
+    "build:watch": "gulp"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
