@@ -1,6 +1,6 @@
 (function initializejQueryPubSub($) {
-  var subjects = {};
   $.observe = (function () {
+    var subjects = {};
     return function (id) {
       var callbacks;
       var subject = id && subjects[id];

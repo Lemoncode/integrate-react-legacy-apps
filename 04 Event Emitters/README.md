@@ -10,31 +10,33 @@ This sample takes as starting point sample _03 Stateful Components_.
 
   ```
   .
-  ├── assets/
-  │   ├── css
-  │   │   └── styles.css
-  │   └── js
-  │       ├── app
-  │       │   ├── App.js
-  │       │   ├── components
-  │       │   │   └── TableComponent.js
-  │       │   ├── modules
-  │       │   │   └── contactsModule.js
-  │       │   ├── plugins
-  │       │   │   └── jquery-pub-sub.js
-  │       │   └── services
-  │       │       └── contactsService.js
-  │       └── index.js
-  │
-  └─ index.html
+  ├─ gulpfile.js
+  ├─ index.html
+  ├─ package.json
+  ├─ node_modules/
+  └── src/
+      ├── css/
+      │   └── styles.css
+      └── js/
+          ├── app/
+          │   ├── App.js
+          │   ├── components/
+          │   │   └── TableComponent.jsx
+          │   ├── modules/
+          │   │   └── contactsModule.jsx
+          │   ├── plugins/
+          │   │   └── jquery-pub-sub.js
+          │   └── services/
+          │       └── contactsService.js
+          └── index.js
   ```
 
 - Then let's define our Pub/Sub implementation, we'll create an object containing all subjects and wrap `jQuery.Callbacks()` when subject don't exist:
 
   ```javascript
   (function initializejQueryPubSub($) {
-    var subjects = {};
-    $.observer = (function () {
+    $.observe = (function () {
+      var subjects = {};
       return function (id) {
         var callbacks, method;
         var subject = id && subjects[id];
@@ -73,7 +75,7 @@ This sample takes as starting point sample _03 Stateful Components_.
 
 Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
 
-- First, we'll add React and ReactDOM to our module dependencies:
+- First, we'll rename it to `contactsModule.jsx` add React and ReactDOM to our module dependencies:
 
   ```javascript
   (function initializeContactsModule($, React, ReactDOM, App) {
@@ -89,7 +91,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
 
 - Next we'll remove `$mountedTableComponent` variable and change `createReactComponents` method definition. We'll also remove `showContacts` method:
 
-  ```javascript
+  ```jsx
   ...
   var contactsService = App.contactsService;
   var contacts;
@@ -98,7 +100,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
 
     var createReactComponents = function () {
       ReactDOM.render(
-        React.createElement(TableComponent, null),
+        <TableComponent/>,
         $('#tableComponent').get(0)
       );
     };
@@ -111,9 +113,10 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
   ...
   var onSubmit = function (event) {
     event.preventDefault();
+    var form = event.currentTarget;
 
     // Retrieve data from form
-    var contact= $(this)
+    var contact= $(form)
       .serializeArray()
       .reduce(function (data, prop) {
         data[prop.name] = prop.value;
@@ -125,7 +128,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
     addContact(contact);
 
     // Reset form controls
-    this.reset();
+    form.reset();
 
     // Fire notification with new contact
     $.observe('addContacts').publish(contact);

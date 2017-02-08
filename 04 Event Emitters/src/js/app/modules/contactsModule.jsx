@@ -9,7 +9,7 @@
 
     var createReactComponents = function () {
       ReactDOM.render(
-        React.createElement(TableComponent, null),
+        <TableComponent />,
         $('#tableComponent').get(0)
       );
     };
