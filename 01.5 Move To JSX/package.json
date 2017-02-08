@@ -6,7 +6,7 @@
   "author": "Santiago Camargo <santi.camargo@lemoncode.net>",
   "license": "MIT",
   "scripts": {
-    "build": "gulp build:watch"
+    "build": "gulp"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -15,7 +15,6 @@
     "react-dom": "^15.4.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
     "babel-preset-react": "^6.22.0",
     "del": "^2.2.2",
     "gulp": "gulpjs/gulp#4.0",
