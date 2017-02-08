@@ -3,6 +3,7 @@
 
 In this sample we're going to add a form to add contacts and change our `Contacts` module to handle the form and refresh `TableComponent` with the new contacts.
 
+> You can start by opening a command prompt, locating yourself on the root folder of the project and executing `npm run build:watch` to tell Gulp to start watching for the changes done.
 
 ## Adding a contact form
 Let's begin by adding the form in our `index.hml` file right inside the `<header>`:
@@ -39,16 +40,16 @@ Let's begin by adding the form in our `index.hml` file right inside the `<header
 
 ## Libraries communication
 
-To use React inside jQuery we could create a custom method extended from `jQuery.prototype` called **react** that receives a component definition, some properties and an optional callback and return the mounted component. This is useful if we need to remount a component that receive new props. Let's create this `react` method in a new filed called `jquery-react.js` under a new folder `plugins`:
+To use React inside jQuery we could create a custom method extended from `jQuery.prototype` called **react** that receives a component definition, some properties and an optional callback and return the mounted component. This is useful if we need to remount a component that receive new props. Let's create this `react` method in a new filed called `jquery-react.jsx` under a new folder `plugins`:
 
-```javascript
+```jsx
 (function initializejQueryReactPlugin($, React, ReactDOM) {
   'use strict';
 
   $.fn.extend({
-    react: function (component, props, callback) {
+    react: function (Component, props, callback) {
       var mountedComponent = ReactDOM.render(
-        React.createElement(component, props),
+        <Component, {...props} />,
         this.get(0)
       );
 
@@ -62,13 +63,15 @@ To use React inside jQuery we could create a custom method extended from `jQuery
 })(jQuery, React, ReactDOM);
 ```
 
-Then add `jquery-react.js` in our `index.html`file:
+> Note that we added React as a dependency but we have not really used it. When we write `.jsx` files all `<tags>` get transformed into `React.createElement` statements so we need to add React.
+
+Then add <code>jquery-react.<strong>js</strong></code> in our `index.html`file (remember `.jsx` will be _transpiled_ to `.js`):
 
 ```html
 ...
 <script src="./node_modules/react-dom/dist/react-dom.js"></script>
-<script src="./assets/js/app/plugins/jquery-react.js"></script>
-<script src="./assets/js/app/App.js"></script>
+<script src="./dist/js/app/plugins/jquery-react.js"></script>
+<script src="./dist/js/app/App.js"></script>
 ...
 ```
 
@@ -76,7 +79,19 @@ Then add `jquery-react.js` in our `index.html`file:
 
 We need to do some changes to `contactsModule` to add event handling and storing the new contacts added so they can be passed to the `TableComponent` :
 
-- First let's declare two variables, **contacts** to store all contacts and **$mountedTableComponent** to keep cached our mounted component.
+- Let's begin renaming it to `contactsModule.js` as we will not be using JSX syntax here. Also remove `React` and `ReactDOM` from its dependencies:
+
+  ```javascript
+  (function initializeContactsModule($, App) {
+    'use strict';
+
+  ...
+
+    App.contactsModule = contactsModule;
+  })(jQuery, window.App);
+  ```
+
+- Now let's declare two variables, **contacts** to store all contacts and **$mountedTableComponent** to keep cached our mounted component.
 
   ```javascript
   (function initializeContactsModule($, App) {

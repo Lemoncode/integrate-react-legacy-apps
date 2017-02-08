@@ -2,9 +2,9 @@
   'use strict';
 
   $.fn.extend({
-    react: function (component, props, callback) {
+    react: function (Component, props, callback) {
       var mountedComponent = ReactDOM.render(
-        React.createElement(component, props),
+        <Component {...props}/>,
         this.get(0)
       );
 
