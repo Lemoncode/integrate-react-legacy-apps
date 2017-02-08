@@ -101,7 +101,7 @@ TableComponent.propTypes = {
 };
 ```
 
-To create the table we're going to add some private methods:
+Since we are going to use ECMAScript5 to write our component we're going to add some private methods to build the table. In the next sample we will see how to integrate JSX in our project to enhace the readability of our component and speed the creation process:
 
 - Let's create a `createCell` method with two parameters, **type** that will be a table cell `<td>` or `<th>`, and **text** that will show the content of the cell. This method will return a `ReactElement`:
 
