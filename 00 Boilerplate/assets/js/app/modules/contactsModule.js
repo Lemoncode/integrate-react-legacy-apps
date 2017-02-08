@@ -1,10 +1,10 @@
-(function ($, App) {
+(function initializeContactsModule($, App) {
   'use strict';
 
   var domUtils = App.domUtils;
   var contactsService = App.contactsService;
 
-  var Contacts = (function () {
+  var contactsModule = (function () {
     var table = '#tableContacts';
 
     var run = function () {
@@ -29,5 +29,5 @@
     };
   })();
 
-  App.Contacts = Contacts;
+  App.contactsModule = contactsModule;
 })(jQuery, window.App);

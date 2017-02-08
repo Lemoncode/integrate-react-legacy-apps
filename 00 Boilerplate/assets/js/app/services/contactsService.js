@@ -1,4 +1,4 @@
-(function ($, App, window) {
+(function initializeContactsService($, App, window) {
   'use strict';
 
   var contactsService = (function () {

@@ -1,4 +1,4 @@
-(function ($, App) {
+(function initializeDOMUtils($, App) {
   'use strict';
 
   var domUtils = (function () {
