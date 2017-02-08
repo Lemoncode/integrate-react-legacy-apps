@@ -5,7 +5,31 @@ In this sample we're going to change the implementation of _02 Props and Render_
 ## From `props` to `state`
 Let's begin changing `TableComponent` implementation to not accept props and set contacts via `setState`:
 
-- First we'll add the lifecycle hook `getInitialState` to initialize `contacts` in the state:
+- First we'll change our stateless component to a React class:
+
+  ```javascript
+  var TableComponent = React.createClass({
+    render: function (props) {
+      var contacts = props.contacts || [];
+      return (
+        <table className="table table-stripped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone number</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {contacts.map(createRow)}
+          </tbody>
+        </table>
+      );
+    }
+  });
+  ```
+
+- Then we are going to add the React lifecycle hook `getInitialState` to initialize `contacts` in the state:
 
   ```javascript
   ...
@@ -19,16 +43,25 @@ Let's begin changing `TableComponent` implementation to not accept props and set
   ...
   ```
 
-- Then change the render method to accept contacts from `state` instead of `props`:
+- Finally change the render method to accept contacts from `state` instead of `props` in its render method:
 
   ```javascript
   render: function () {
-    return React.createElement('table',
-      { className: 'table table-stripped table-bordered table-hover' },
-      createHead(),
-      createBody(this.state.contacts)
+    return (
+      <table className="table table-stripped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone number</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.contacts.map(createRow)}
+        </tbody>
+      </table>
     );
-  },
+  }
   ```
 
 ## Setting component state
