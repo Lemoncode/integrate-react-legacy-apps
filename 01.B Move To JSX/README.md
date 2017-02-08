@@ -251,7 +251,7 @@ With these changes we only need to open a command line prompt and type `npm run 
   </html>
   ```
 
-- Finally let's make a build using Gulp, execute in a command prompt `npm run build`. We'll get a copy of `src` files in `dist` folder without `.jsx` files:
+- Finally let's make a build using Gulp, open a command line prompt, locate yourself in the root folder of the project and execute in a command prompt `npm run build` to get a copy of `src` files in `dist` folder without `.jsx` files. After running the build our `dist` folder should look like this:
 
   ```
   dist
@@ -269,4 +269,4 @@ With these changes we only need to open a command line prompt and type `npm run 
       └── index.js
   ```
 
-To see the example working open `index.html` in a browser. If we need to do more changes just run `npm run build:watch` and it will automatically copy and transpile files.
+To see the example working open `index.html` in a browser. If we were developing this component and making more changes we'll just run on the command line prompt `npm run build:watch` to let Gulp watch for changes and automatically transpile and copy the files to `dist` folder.
