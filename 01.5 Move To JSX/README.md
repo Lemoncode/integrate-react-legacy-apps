@@ -149,7 +149,7 @@ We're basically creating six tasks:
 
 Finally we'll add to our `package.json` a build task that call Gulp and start the development process:
 
-```json
+```javascript
 ...
 "scripts": {
   "build": "gulp build",
