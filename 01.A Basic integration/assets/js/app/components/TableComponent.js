@@ -37,5 +37,15 @@
     );
   }
 
+  TableComponent.propTypes = {
+    contacts: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        name: React.PropTypes.string.isRequired,
+        phone: React.PropTypes.string.isRequired,
+        email: React.PropTypes.string.isRequired
+      })
+    )
+  };
+
   App.components.TableComponent = TableComponent;
 })(React, window.App);

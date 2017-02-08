@@ -79,17 +79,26 @@ Let's write our React `TableComponent`. This will need two dependencies, React t
 (function initializeTableComponent(React, App) {
   'use strict';
 
-  var TableComponent = React.createClass({
-    getInitialState: function () {
-      return {
-        contacts: []
-      };
-    },
-    render: function () { }
-  });
+  var TableComponent = function(props) {
+
+  };
 
   App.components.TableComponent = TableComponent;
 })(React, window.App);
+```
+
+Our component will need a contacts array from props to render the table. Let's add some `propTypes` validation right below the `TableComponent` definition:
+
+```javascript
+TableComponent.propTypes = {
+  contacts: React.PropTypes.arrayOf(
+    React.PropTypes.shape({
+      name: React.PropTypes.string.isRequired,
+      phone: React.PropTypes.string.isRequired,
+      email: React.PropTypes.string.isRequired
+    })
+  )
+};
 ```
 
 To create the table we're going to add some private methods:
@@ -102,7 +111,7 @@ To create the table we're going to add some private methods:
     return React.createElement(type, null, text);
   };
 
-  var TableComponent = React.createClass({
+  var TableComponent = function(props) {
   ...
   ```
 
@@ -118,7 +127,7 @@ To create the table we're going to add some private methods:
     );
   };
 
-  var TableComponent = React.createClass({
+  var TableComponent = function(props) {
   ...
   ```
 
@@ -126,7 +135,7 @@ To create the table we're going to add some private methods:
 
   ```javascript
   ...
-  var createThead = function () {
+  var createHead = function () {
     var contactTemplate = {
       name: 'Name',
       phone: 'Phone number',
@@ -135,11 +144,11 @@ To create the table we're going to add some private methods:
     return React.createElement('thead', null, createRow('th', null, contactTemplate));
   };
 
-  var TableComponent = React.createClass({
+  var TableComponent = function(props) {
   ...
   ```
 
-- Time to create the `<tbody>`,  let's write a `createTbody` method that will returns the `<tbody>` This method will need an array of contacts:
+- Time to create the `<tbody>`,  let's write a `createBody` method that will returns the `<tbody>` This method will need an array of contacts:
 
   ```javascript
   ...
@@ -150,7 +159,7 @@ To create the table we're going to add some private methods:
     return React.createElement('tbody', null, rows);
   };
 
-  var TableComponent = React.createClass({
+  var TableComponent = function(props) {
   ...
   ```
 
@@ -159,13 +168,13 @@ To create the table we're going to add some private methods:
   ```javascript
   ...
   },
-  render: function () {
+  var TableComponent = function(props) {
     return React.createElement('table',
       { className: 'table table-stripped table-bordered table-hover' },
       createHead(),
       createBody(this.state.contacts)
     );
-  }
+  };
   ...
   ```
 
@@ -217,7 +226,6 @@ Let's jump into our `contactsModule.js` and make some changes:
   ```
 
 After all this changes, we should get our `TableComponent` integrated in our jQuery app.
-
 
 ## How it works?
 
