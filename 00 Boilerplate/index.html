@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Boilerplate</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h2>Address Book</h2>
+      </header>
+      <main class="main">
+        <h4>My contacts</h4>
+        <table id="tableContacts" class="table table-stripped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </main>
+    </div>
+
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./assets/js/app/App.js"></script>
+    <script src="./assets/js/app/helpers/domUtils.js"></script>
+    <script src="./assets/js/app/services/contactsService.js"></script>
+    <script src="./assets/js/app/modules/contactsModule.js"></script>
+    <script src="./assets/js/index.js"></script>
+  </body>
+</html>
