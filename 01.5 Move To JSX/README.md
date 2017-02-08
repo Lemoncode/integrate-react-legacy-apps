@@ -1,4 +1,4 @@
-#01.5 Moving to JSX
+# 01.5 Moving to JSX
 
 Most of React projects are written using ECMAScript2015 syntax and JSX and transpiled using Webpack, Rollup, Browserify or some other bundler. In this sample we'll be configuring our project to use a task manager to automatize our transpilation process.
 
