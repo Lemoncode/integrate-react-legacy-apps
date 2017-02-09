@@ -4,8 +4,6 @@ dist/
 typings/
 *.orig
 .idea/
-*/src/**/*.js
-*/src/**/*.js.map
 */coverage/
 .vscode/
 .editorconfig
