@@ -1,7 +1,7 @@
 (function initializeContactsModule($, React, ReactDOM, App) {
   'use strict';
 
-  var TableComponent = App.components.TableComponent;
+  var ContactsTableComponent = App.components.ContactsTableComponent;
   var contactsService = App.contactsService;
 
   var contactsModule = function () {
@@ -12,7 +12,7 @@
 
         // Pass contacts to TableComponent
         ReactDOM.render(
-          <TableComponent contacts={fetchedContacts} />,
+          <ContactsTableComponent contacts={fetchedContacts} />,
           $('#tableComponent').get(0)
         );
       });

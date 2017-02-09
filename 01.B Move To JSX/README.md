@@ -1,48 +1,10 @@
 # 01.5 Moving to JSX
 
-Most of React projects are written using ECMAScript2015 syntax and JSX and transpiled using Webpack, Rollup, Browserify or some other bundler. In this sample we'll be configuring our project to use a task manager to automatize our transpilation process.
+Most of React projects are written using JSX syntax with ECMAScript2015 and transpiled using Webpack, Rollup, Browserify or some other bundler. In this sample we'll be configuring our project to use a task manager to automatize our transpilation process.
 
 ## Why JSX?
 
-Using JSX syntax is not mandatory, however it has some advantages like better readabilty instead of using `React.createElement` method. For instance, we've grouped in our `TableComponent` the creation of each table subcomponent in little reusable functions (`createCell`, `createRow`, `createHead`, `createBody`) but some of these functions are not reused, we use `createCell` and `createRow` a lot when we need to render new `<tr>`, `createCell` method can also be removed though. Let's see how should look our `TableComponent` excluding not reusable methods:
-
-```javascript
-(function initializeTableComponent(React, App) {
-  'use strict';
-
-  var createRow = function (contact, index) {
-    return React.createElement("tr", { key: index },
-      React.createElement("td", null, contact.name),
-      React.createElement("td", null, contact.phone),
-      React.createElement("td", null, contact.email)
-    );
-  };
-
-  var TableComponent = function (props) {
-    var contacts = props.contacts || [];
-    return React.createElement(
-      "table",
-      { className: "table table-stripped table-bordered table-hover" },
-      React.createElement("thead", null,
-        React.createElement("tr", null,
-          React.createElement("th", null, "Name"),
-          React.createElement("th", null, "Phone number"),
-          React.createElement("th", null, "Email")
-        )
-      ),
-      React.createElement("tbody", null, contacts.map(createRow))
-    );
-  };
-
-  TableComponent.propTypes = {
-    contacts: React.PropTypes.array
-  };
-
-  App.components.TableComponent = TableComponent;
-})(React, window.App);
-```
-
-JSX allows us to write components using fewer lines of code, and obtain a better visualization of them thanks to the HTML like syntax. Let's see how would looks  the above `createRow` method using JSX syntax:
+Using JSX syntax is not mandatory, however it has some advantages like better readabilty instead of using `React.createElement` method. JSX allows us to write components using fewer lines of code, and obtain a better visualization of them thanks to the HTML like syntax.
 
 ```jsx
 var createRow = function (contact, index) {
@@ -85,7 +47,9 @@ Then, we need to make a folder that will contain files that we use for productio
         ├── app/
         │   ├── App.js
         │   ├── components/
-        │   │   └── TableComponent.js
+        │   │   ├── ContactPropTypes.js
+        │   │   ├── ContactRowComponent.js
+        │   │   └── ContactsTableComponent.js
         │   ├── modules/
         │   │   └── contactsModule.js
         │   └── services/
@@ -139,7 +103,7 @@ gulp.task('watch', function () {
 gulp.task('default', gulp.parallel('build', 'watch'));
 ```
 
-We're basically creating six tasks:
+We've basically created six tasks:
 - `transpile` will transform all `.jsx` files into `.js` and move them to `dist` folder.
 - `copy` will make a copy of our JavaScript and CSS files and place them into the `dist` folder.
 - `clean` will erase all contents from our `dist` folder.
@@ -164,54 +128,60 @@ With these changes we only need to open a command line prompt and type `npm run 
 
 ## JSX Implementation
 
-- Let's begin changing our `TableComponent` to use JSX syntax. Rename it to `TableComponent.jsx` and replace all of `React.createElement` statements to JSX syntax using the above implementation:
+- Let's begin changing our `ContactRowComponent` to use JSX syntax. Rename it to `ContactRowComponent.jsx` and replace all of `React.createElement` statements with JSX syntax:
 
   ```jsx
-  (function initializeTableComponent(React, App) {
-    'use strict';
+  ...
+  var ContactRowComponent = function (props) {
+    var contact = props.contact || {};
+    return (
+      <tr>
+        <td>{contact.name}</td>
+        <td>{contact.phone}</td>
+        <td>{contact.email}</td>
+      </tr>
+    );
+  };
 
-    var createRow = function (contact, index) {
-      return (
-        <tr key={index}>
-          <td>{contact.name}</td>
-          <td>{contact.phone}</td>
-          <td>{contact.email}</td>
-        </tr>
-      );
-    };
-
-    var TableComponent = function (props) {
-      var contacts = props.contacts || [];
-      return (
-        <table className="table table-stripped table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone number</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            {contacts.map(createRow)}
-          </tbody>
-        </table>
-      );
-    };
-
-    TableComponent.propTypes = {
-      contacts: React.PropTypes.array
-    };
-
-    App.components.TableComponent = TableComponent;
-  })(React, window.App);
+  ContactRowComponent.displayName = 'ContactRowComponent';
+  ContactRowComponent.propTypes = {
+    contact: ContactPropTypes
+  };
+  ...
   ```
 
-- Next we'll also rename our `contactsModule.js` to `contactsModule.jsx` and replace the ReactDOM.render arguments with:
+	This looks more familiar, right?
+
+- Next we'll proceed to change our `ContactsTableComponent` to use JSX syntax. Like we've done with`ContactRowComponent` let's rename it to `ContactsTableComponent.jsx` and replace all of `React.createElement` statements with JSX syntax :
+
+  ```jsx
+  var ContactsTableComponent = function (props) {
+    var contacts = props.contacts || [];
+    return (
+      <table className="table table-stripped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone number</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {contacts.map(function (contact, index) {
+            return <ContactRowComponent key={index} contact={contact} />;
+          })}
+        </tbody>
+      </table>
+    );
+  };
+  ```
+
+- Then we'll also rename our `contactsModule.js` to `contactsModule.jsx` and replace the ReactDOM.render arguments with:
 
   ```jsx
   // Pass contacts to TableComponent
   ReactDOM.render(
-    <TableComponent contacts={fetchedContacts} />,
+    <ContactsTableComponent contacts={fetchedContacts} />,
     $('#tableComponent').get(0)
   );
   ```
@@ -219,7 +189,7 @@ With these changes we only need to open a command line prompt and type `npm run 
 - With the new folder structure we need to make some changes in our `index.html` to use our `dist` folder instead of `assets`:
 
   ```html
-  <!DOCTYPE html>
+    <!DOCTYPE html>
   <html lang="es">
     <head>
       <meta charset="UTF-8">
@@ -243,7 +213,9 @@ With these changes we only need to open a command line prompt and type `npm run 
       <script src="./node_modules/react-dom/dist/react-dom.js"></script>
 
       <script src="./dist/js/app/App.js"></script>
-      <script src="./dist/js/app/components/TableComponent.js"></script>
+      <script src="./dist/js/app/components/ContactPropTypes.js"></script>
+      <script src="./dist/js/app/components/ContactRowComponent.js"></script>
+      <script src="./dist/js/app/components/ContactsTableComponent.js"></script>
       <script src="./dist/js/app/services/contactsService.js"></script>
       <script src="./dist/js/app/modules/contactsModule.js"></script>
       <script src="./dist/js/index.js"></script>
@@ -261,7 +233,9 @@ With these changes we only need to open a command line prompt and type `npm run 
       ├── app
       │   ├── App.js
       │   ├── components
-      │   │   └── TableComponent.js
+      │   │   ├── ContactPropTypes.js
+      │   │   ├── ContactRowComponent.js
+      │   │   └── ContactsTableComponent.js
       │   ├── modules
       │   │   └── contactsModule.js
       │   └── services
@@ -269,4 +243,6 @@ With these changes we only need to open a command line prompt and type `npm run 
       └── index.js
   ```
 
-To see the example working open `index.html` in a browser. If we were developing this component and making more changes we'll just run on the command line prompt `npm run build:watch` to let Gulp watch for changes and automatically transpile and copy the files to `dist` folder.
+To see the example working open `index.html` in a browser.
+
+> If we were developing this component and making more changes we'll just run on the command line prompt `npm run build:watch` and Gulp will watch for changes and automatically transpile and copy the files to `dist` folder so you'll only have to refresh the browser to see changes.
