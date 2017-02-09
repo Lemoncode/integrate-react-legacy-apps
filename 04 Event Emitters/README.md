@@ -23,7 +23,8 @@ This sample takes as starting point sample _03 Stateful Components_.
           │   ├── components/
           │   │   ├── ContactPropTypes.jsx
           │   │   ├── ContactRowComponent.jsx
-          │   │   └── ContactsTableComponent.jsx
+          │   │   ├── ContactsTableComponent.jsx
+          │   │   └── ContactsTableContainer.jsx
           │   ├── modules/
           │   │   └── contactsModule.jsx
           │   ├── plugins/
@@ -58,7 +59,7 @@ This sample takes as starting point sample _03 Stateful Components_.
         return subject;
       };
     })();
-  })(jQuery);
+  })(window.jQuery);
   ```
 
 - Then we can add `jquery-pub-sub.js` to our `index.html` file:
@@ -83,15 +84,15 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
   (function initializeContactsModule($, React, ReactDOM, App) {
     'use strict';
 
-    var ContactsTableComponent = App.components.ContactsTableComponent;
+    var ContactsTableContainer = App.components.ContactsTableContainer;
 
     ...
 
     App.contactsModule = contactsModule;
-  })(jQuery, React, ReactDOM, window.App);
+  })(window.jQuery, window.React, window.ReactDOM, window.App);
   ```
 
-- Next we'll remove `$mountedContactsTableComponent` variable and change `createReactComponents` method definition. We'll also remove `showContacts` method:
+- Next we'll remove `$mountedContactsTableContainer` variable and change `createReactComponents` method definition. We'll also remove `showContacts` method:
 
   ```jsx
   ...
@@ -102,7 +103,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
 
     var createReactComponents = function () {
       ReactDOM.render(
-        <ContactsTableComponent/>,
+        <ContactsTableContainer />,
         $('#tableComponent').get(0)
       );
     };
@@ -153,27 +154,28 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
   ...
   ```
 
-## Subscribing our `ContactsTableComponent` to subject
+## Subscribing our `ContactsTableContainer` to subject
 
-Subscribing our `ContactsTableComponent` to a subject is pretty straightforward:
+Subscribing our `ContactsTableContainer` to a subject is pretty straightforward:
 
 - First we'll need to add `jQuery` to its dependencies:
 
   ```javascript
-  (function initializeContactsTableComponent($, React, App) {
+  (function initializeContactsTableContainer($, React, App) {
     'use strict';
 
-  ...
+    ...
 
-    App.components.ContactsTableComponent = ContactsTableComponent;
-  })(jQuery, React, window.App);
+    App.components.ContactsTableContainer = ContactsTableContainer;
+  })(window.jQuery, window.React, window.App);
   ```
 
-- Next we'll create a method to handle new contacts through subscription to `contacts` subject and set it in it's state:
+- Next we'll create a method to handle new contacts through subscription to `addContacts` subject and set it in it's state:
 
   ```javascript
   ...
-  var ContactsTableComponent = React.createClass({
+  var ContactsTableContainer = React.createClass({
+    displayName: 'ContactsTableContainer',
     onAddContact: function (contact) {
       this.setState({
         contacts: this.state.contacts.concat(contact)
@@ -183,7 +185,7 @@ Subscribing our `ContactsTableComponent` to a subject is pretty straightforward:
   ...
   ```
 
-- Then we need to define two React lifecycles methods, with `componentDidMount` we'll subscribe to `contacts` subject and `componentWillUnmount` will be used to unsubscribe the component from the subject:
+- Finally we need to define two React lifecycles methods, with `componentDidMount` we'll subscribe to `addContacts` subject and `componentWillUnmount` will be used to unsubscribe the component from the subject:
 
   ```javascript
   ...

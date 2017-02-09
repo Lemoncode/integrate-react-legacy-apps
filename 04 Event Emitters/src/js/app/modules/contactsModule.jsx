@@ -1,7 +1,7 @@
 (function initializeContactsModule($, React, ReactDOM, App) {
   'use strict';
 
-  var ContactsTableComponent = App.components.ContactsTableComponent;
+  var ContactsTableContainer = App.components.ContactsTableContainer;
   var contactsService = App.contactsService;
   var contacts;
 
@@ -9,7 +9,7 @@
 
     var createReactComponents = function () {
       ReactDOM.render(
-        <ContactsTableComponent />,
+        <ContactsTableContainer />,
         $('#tableComponent').get(0)
       );
     };
