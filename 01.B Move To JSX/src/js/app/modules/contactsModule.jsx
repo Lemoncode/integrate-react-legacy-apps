@@ -28,4 +28,4 @@
   }();
 
   App.contactsModule = contactsModule;
-})(jQuery, React, ReactDOM, window.App);
+})(window.jQuery, window.React, window.ReactDOM, window.App);

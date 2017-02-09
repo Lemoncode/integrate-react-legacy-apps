@@ -30,4 +30,4 @@
   };
 
   App.components.ContactsTableComponent = ContactsTableComponent;
-})(React, window.App);
+})(window.React, window.App);
