@@ -1,14 +1,14 @@
 # 03 Stateful Component
 
-In this sample we're going to change the implementation of _02 Props and Render_ to introduce a `TableComponent` that can store contacts in its own state.
+In this sample we're going to change the implementation of _02 Props and Render_ to introduce a `ContactsTableComponent` that can store contacts in its own state.
 
 ## From `props` to `state`
-Let's begin changing `TableComponent` implementation to not accept props and set contacts via `setState`:
+Let's begin changing `ContactsTableComponent` implementation to not accept props and set contacts via `setState`:
 
 - First we'll change our stateless component to a React class:
 
   ```javascript
-  var TableComponent = React.createClass({
+  var ContactsTableComponent = React.createClass({
     render: function (props) {
       var contacts = props.contacts || [];
       return (
@@ -21,7 +21,9 @@ Let's begin changing `TableComponent` implementation to not accept props and set
             </tr>
           </thead>
           <tbody>
-            {contacts.map(createRow)}
+            {contacts.map(function(contact, index) {
+              return <ContactRowComponent key={index} contact={contact} />;
+            })}
           </tbody>
         </table>
       );
@@ -33,7 +35,7 @@ Let's begin changing `TableComponent` implementation to not accept props and set
 
   ```javascript
   ...
-  var TableComponent = React.createClass({
+  var ContactsTableComponent = React.createClass({
     getInitialState: function () {
       return {
         contacts: []
@@ -57,7 +59,9 @@ Let's begin changing `TableComponent` implementation to not accept props and set
           </tr>
         </thead>
         <tbody>
-          {this.state.contacts.map(createRow)}
+          {this.state.contacts.map(function (contact, index) {
+            return <ContactRowComponent key={index} contact={contact} />;
+          })}
         </tbody>
       </table>
     );
@@ -72,7 +76,7 @@ There are few changes to do in `contactsModule`:
 
   ```javascript
   var createReactComponents = function () {
-    $mountedTableComponent = $('#tableComponent').react(TableComponent, null);
+    $mountedContactsTableComponent = $('#tableComponent').react(ContactsTableComponent, null);
   };
   ```
 
@@ -80,15 +84,14 @@ There are few changes to do in `contactsModule`:
 
   ```javascript
   var showContacts = function (contacts, callback) {
-    $mountedTableComponent.setState({ contacts: contacts });
+    $mountedContactsTableComponent.setState({ contacts: contacts });
   };
   ```
 
-
 ## How it works?
 
-1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts.
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `ContactsTableComponent` which creates its own state with an empty array of contacts.
 
-2. `TableComponent` mounted component is stored in  `$mountedTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `TableComponent` changes its state via `setState` with new contacts. This triggers React component lifecycles and results in rendering `<tbody>` with the contacts information.
+2. `ContactsTableComponent` mounted component is stored in  `$mountedContactsTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `ContactsTableComponent` changes its state via `setState` with new contacts. This triggers React component lifecycles and results in rendering `<tbody>` with the contacts information.
 
-3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `contacts` is passed to `showContacts`, changing the `TableComponent` states so it renders last `<tr>` into the DOM.
+3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `contacts` is passed to `showContacts`, changing the `ContactsTableComponent` states so it renders last `<tr>` into the DOM.

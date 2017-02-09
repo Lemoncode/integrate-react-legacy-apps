@@ -15,4 +15,4 @@
       return mountedComponent;
     }
   });
-})(jQuery, React, ReactDOM);
+})(window.jQuery, window.React, window.ReactDOM);
