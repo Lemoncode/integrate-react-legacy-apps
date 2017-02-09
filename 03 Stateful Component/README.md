@@ -95,4 +95,4 @@ There are few changes to do in `contactsModule`:
 
 2. `ContactsTableComponent` mounted component is stored in  `$mountedContactsTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `ContactsTableComponent` changes its state via `setState` with new contacts. This triggers React component lifecycles and results in rendering `<tbody>` with the contacts information.
 
-3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `contacts` is passed to `showContacts`, changing the `ContactsTableComponent` states so it renders last `<tr>` into the DOM.
+3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `contacts` is passed to `showContacts`, changing the `ContactsTableComponent` state so it renders last `<tr>` into the DOM.
