@@ -1,18 +1,18 @@
 (function initializeContactsModule($, App) {
   'use strict';
 
-  var ContactsTableComponent = App.components.ContactsTableComponent;
+  var ContactsTableContainer = App.components.ContactsTableContainer;
   var contactsService = App.contactsService;
-  var contacts, $mountedContactsTableComponent;
+  var contacts, $mountedContactsTableContainer;
 
   var contactsModule = (function () {
 
     var createReactComponents = function () {
-      $mountedContactsTableComponent = $('#tableComponent').react(ContactsTableComponent, null);
+      $mountedContactsTableContainer = $('#tableComponent').react(ContactsTableContainer, null);
     };
 
     var showContacts = function (contacts, callback) {
-      $mountedContactsTableComponent.setState({ contacts: contacts });
+      $mountedContactsTableContainer.setState({ contacts: contacts });
     };
 
     var getContactObject = function (contact) {
