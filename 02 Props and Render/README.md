@@ -60,7 +60,7 @@ To use React inside jQuery we could create a custom method extended from `jQuery
       return mountedComponent;
     }
   });
-})(jQuery, React, ReactDOM);
+})(window.jQuery, React, ReactDOM);
 ```
 
 > Note that we added React as a dependency but we have not really used it. When we write `.jsx` files all `<tags>` get transformed into `React.createElement` statements so we need to add React.
@@ -88,7 +88,7 @@ We need to do some changes to `contactsModule` to add event handling and storing
     ...
 
     App.contactsModule = contactsModule;
-  })(jQuery, window.App);
+  })(window.jQuery, window.App);
   ```
 
 - Now let's declare two variables, **contacts** to store all contacts and **$mountedContactsTableComponent** to keep cached our mounted component.
