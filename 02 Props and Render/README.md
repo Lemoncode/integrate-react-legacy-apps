@@ -1,7 +1,7 @@
 # 02 Props and Render
 
 
-In this sample we're going to add a form to add contacts and change our `Contacts` module to handle the form and refresh `TableComponent` with the new contacts.
+In this sample we're going to add a form to add contacts and change our `Contacts` module to handle the form and refresh `ContactsTableComponent` with the new contacts.
 
 > You can start by opening a command prompt, locating yourself on the root folder of the project and executing `npm run build:watch` to tell Gulp to start watching for the changes done.
 
@@ -77,7 +77,7 @@ Then add <code>jquery-react.<strong>js</strong></code> in our `index.html`file (
 
 ## Refactoring `contactsModule`
 
-We need to do some changes to `contactsModule` to add event handling and storing the new contacts added so they can be passed to the `TableComponent` :
+We need to do some changes to `contactsModule` to add event handling and storing the new contacts added so they can be passed to the `ContactsTableComponent` :
 
 - Let's begin renaming it to `contactsModule.js` as we will not be using JSX syntax here. Also remove `React` and `ReactDOM` from its dependencies:
 
@@ -85,21 +85,21 @@ We need to do some changes to `contactsModule` to add event handling and storing
   (function initializeContactsModule($, App) {
     'use strict';
 
-  ...
+    ...
 
     App.contactsModule = contactsModule;
   })(jQuery, window.App);
   ```
 
-- Now let's declare two variables, **contacts** to store all contacts and **$mountedTableComponent** to keep cached our mounted component.
+- Now let's declare two variables, **contacts** to store all contacts and **$mountedContactsTableComponent** to keep cached our mounted component.
 
   ```javascript
   (function initializeContactsModule($, App) {
     'use strict';
 
-    var TableComponent = App.components.TableComponent;
+    var ContactsTableComponent = App.components.ContactsTableComponent;
     var contactsService = App.contactsService;
-    var contacts, $mountedTableComponent;
+    var contacts, $mountedContactsTableComponent;
 
     var contactsModule = (function () {
   ```
@@ -117,7 +117,7 @@ We need to do some changes to `contactsModule` to add event handling and storing
   ...
   ```
 
-- Next let's create the `onSubmit` handler. This method will be intended to retrieve the form values, adapt it to a _contact_ model, add the contact model to our contacts array and finally tell our `TableComponent` to render:
+- Next let's create the `onSubmit` handler. This method will be intended to retrieve the form values, adapt it to a _contact_ model, add the contact model to our contacts array and finally tell our `ContactsTableComponent` to render:
 
   ```javascript
   var onSubmit = function (event) {
@@ -150,7 +150,7 @@ We need to do some changes to `contactsModule` to add event handling and storing
 var getContactObject = function (contact) {
   return {
     name: contact.txtName || null,
-    phone: contact.txtPhone || null,
+    phone: parseInt(contact.txtPhone) || null,
     email: contact.txtEmail || null
   };
 };
@@ -163,24 +163,24 @@ var onSubmit = function (event) {
 ...
 ```
 
-- Next step is to define the `showContacts` method that will remount our `TableComponent`:
+- Next step is to define the `showContacts` method that will update our `ContactsTableComponent`:
 
 ```javascript
 ....
 var showContacts = function (contacts, callback) {
-  $mountedTableComponent.react(TableComponent, { contacts: contacts || [] }, callback);
+  $mountedContactsTableComponent.react(ContactsTableComponent, { contacts: contacts || [] }, callback);
 };
 
 var getContactObject = function (contact) {
 ....
 ```
 
-- Finally we'll create a `createReactComponents` method to initialize our component and store it in `$mountedTableComponent` when `run` is called:
+- Finally we'll create a `createReactComponents` method to initialize our component and store it in `$mountedContactsTableComponent` when `run` is called:
 
 ```javascript
 ...
 var createReactComponents = function () {
-  $mountedTableComponent = $('#tableComponent');
+  $mountedContactsTableComponent = $('#ContactsTableComponent');
   showContacts(null);
 };
 
@@ -196,8 +196,8 @@ var run = function () {
 
 ## How it works?
 
-1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` with an empty array.
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `ContactsTableComponent` with an empty array.
 
-2. `TableComponent` jQuery selector is stored in  `$mountedTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `TableComponent` is remounted with new contacts (React diffs the current table with the new rendered table and renders only the `<tbody>`).
+2. `ContactsTableComponent` jQuery selector is stored in  `$mountedContactsTableComponent` variable and initially renders the table header. When `fetchContacts` is completed `ContactsTableComponent` is updated with new contacts (React diffs the current table with the new rendered table and renders only the `<tbody>`).
 
-3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `contacts` is passed to `showContacts`, remounting the `TableComponent` and rendering last `<tr>` into the DOM.
+3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `contacts` is passed to `showContacts`, updateing the `ContactsTableComponent` and rendering last `<tr>` into the DOM.

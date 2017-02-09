@@ -1,26 +1,26 @@
 (function initializeContactsModule($, App) {
   'use strict';
 
-  var TableComponent = App.components.TableComponent;
+  var ContactsTableComponent = App.components.ContactsTableComponent;
   var contactsService = App.contactsService;
-  var contacts, $mountedTableComponent;
+  var contacts, $mountedContactsTableComponent;
 
   var contactsModule = (function () {
 
 
     var createReactComponents = function () {
-      $mountedTableComponent = $('#tableComponent');
+      $mountedContactsTableComponent = $('#tableComponent');
       showContacts(null);
     };
 
     var showContacts = function (contacts, callback) {
-      $mountedTableComponent.react(TableComponent, { contacts: contacts || [] }, callback);
+      $mountedContactsTableComponent.react(ContactsTableComponent, { contacts: contacts || [] }, callback);
     };
 
     var getContactObject = function (contact) {
       return {
         name: contact.txtName || null,
-        phone: contact.txtPhone || null,
+        phone: parseInt(contact.txtPhone) || null,
         email: contact.txtEmail || null
       };
     };
