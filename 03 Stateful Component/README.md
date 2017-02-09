@@ -36,6 +36,7 @@ Let's begin changing `ContactsTableComponent` implementation to not accept props
   ```javascript
   ...
   var ContactsTableComponent = React.createClass({
+    displayName: 'ContactsTableComponent',
     getInitialState: function () {
       return {
         contacts: []
