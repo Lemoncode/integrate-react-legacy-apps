@@ -1,16 +1,22 @@
 (function initializeTableComponent(React, App) {
   'use strict';
 
-  var createCell = function (type, text) {
-    return React.createElement(type, null, text);
-  };
-
-  var createRow = function (cell, index, contact) {
-    return React.createElement('tr', { key: index },
-      createCell(cell, contact.name),
-      createCell(cell, contact.phone),
-      createCell(cell, contact.email)
+  var TableComponent = function (props) {
+    return React.createElement('table',
+      { className: 'table table-stripped table-bordered table-hover' },
+      createHead(),
+      createBody(props.contacts || [])
     );
+  }
+
+  TableComponent.propTypes = {
+    contacts: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        name: React.PropTypes.string.isRequired,
+        phone: React.PropTypes.string.isRequired,
+        email: React.PropTypes.string.isRequired
+      })
+    )
   };
 
   var createHead = function () {
@@ -29,22 +35,16 @@
     return React.createElement('tbody', null, rows);
   };
 
-  var TableComponent = function (props) {
-    return React.createElement('table',
-      { className: 'table table-stripped table-bordered table-hover' },
-      createHead(),
-      createBody(props.contacts || [])
+  var createRow = function (cell, index, contact) {
+    return React.createElement('tr', { key: index },
+      createCell(cell, contact.name),
+      createCell(cell, contact.phone),
+      createCell(cell, contact.email)
     );
-  }
+  };
 
-  TableComponent.propTypes = {
-    contacts: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        name: React.PropTypes.string.isRequired,
-        phone: React.PropTypes.string.isRequired,
-        email: React.PropTypes.string.isRequired
-      })
-    )
+  var createCell = function (type, text) {
+    return React.createElement(type, null, text);
   };
 
   App.components.TableComponent = TableComponent;
