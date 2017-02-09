@@ -20,4 +20,4 @@
       return subject;
     };
   })();
-})(jQuery);
+})(window.jQuery);

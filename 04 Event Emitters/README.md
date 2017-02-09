@@ -6,7 +6,7 @@ This sample takes as starting point sample _03 Stateful Components_.
 
 ## Creating subjects
 
-- First we'll create under `plugins` folder a new file called `jquery-pub-sub.js` and remove `jquery-react.js` as we aren't going to need it. Your folder structure should look like this:
+- First we'll create under `plugins` folder a new file called `jquery-pub-sub.js` and remove `jquery-react.jsx` as we aren't going to need it. Your folder structure should look like this:
 
   ```
   .
@@ -21,7 +21,9 @@ This sample takes as starting point sample _03 Stateful Components_.
           ├── app/
           │   ├── App.js
           │   ├── components/
-          │   │   └── TableComponent.jsx
+          │   │   ├── ContactPropTypes.jsx
+          │   │   ├── ContactRowComponent.jsx
+          │   │   └── ContactsTableComponent.jsx
           │   ├── modules/
           │   │   └── contactsModule.jsx
           │   ├── plugins/
@@ -81,7 +83,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
   (function initializeContactsModule($, React, ReactDOM, App) {
     'use strict';
 
-    var TableComponent = App.components.TableComponent;
+    var ContactsTableComponent = App.components.ContactsTableComponent;
 
     ...
 
@@ -89,7 +91,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
   })(jQuery, React, ReactDOM, window.App);
   ```
 
-- Next we'll remove `$mountedTableComponent` variable and change `createReactComponents` method definition. We'll also remove `showContacts` method:
+- Next we'll remove `$mountedContactsTableComponent` variable and change `createReactComponents` method definition. We'll also remove `showContacts` method:
 
   ```jsx
   ...
@@ -100,7 +102,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
 
     var createReactComponents = function () {
       ReactDOM.render(
-        <TableComponent/>,
+        <ContactsTableComponent/>,
         $('#tableComponent').get(0)
       );
     };
@@ -151,19 +153,19 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
   ...
   ```
 
-## Subscribing our `TableComponent` to subject
+## Subscribing our `ContactsTableComponent` to subject
 
-Subscribing our `TableComponent` to a subject is pretty straightforward:
+Subscribing our `ContactsTableComponent` to a subject is pretty straightforward:
 
 - First we'll need to add `jQuery` to its dependencies:
 
   ```javascript
-  (function initializeTableComponent($, React, App) {
+  (function initializeContactsTableComponent($, React, App) {
     'use strict';
 
   ...
 
-    App.components.TableComponent = TableComponent;
+    App.components.ContactsTableComponent = ContactsTableComponent;
   })(jQuery, React, window.App);
   ```
 
@@ -171,7 +173,7 @@ Subscribing our `TableComponent` to a subject is pretty straightforward:
 
   ```javascript
   ...
-  var TableComponent = React.createClass({
+  var ContactsTableComponent = React.createClass({
     onAddContact: function (contact) {
       this.setState({
         contacts: this.state.contacts.concat(contact)
@@ -198,9 +200,9 @@ Subscribing our `TableComponent` to a subject is pretty straightforward:
 
 ## How it works?
 
-1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts and renders the table header.
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `ContactsTableComponent` which creates its own state with an empty array of contacts and renders the table header.
 
-2. When `fetchContacts` is completed we fire the subject `addContacts`  with the new contacts and `TableComponent` gets notified, calling `onAddContact` method that changes its state via `setState` with new contacts. This triggers React component lifecycles and results in rendering `<tbody>` with the contacts information.
+2. When `fetchContacts` is completed we fire the subject `addContacts`  with the new contacts and `ContactsTableComponent` gets notified, calling `onAddContact` method that changes its state via `setState` with new contacts. This triggers React component lifecycles and results in rendering `<tbody>` with the contacts information.
 
-3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `addContacs` subject is fired with the new contact and `TableComponent` receives the notification with the new contact so it pushes into its state with the rest of contacts. React diffs the new state and it renders last `<tr>` into the DOM.
+3. When we fill the form and click on `Add contact` `onSubmit` is triggered retrieving the form data and storing the new contact in `contacts` array, then `addContacs` subject is fired with the new contact and `ContactsTableComponent` receives the notification with the new contact so it pushes into its state with the rest of contacts. React diffs the new state and it renders last `<tr>` into the DOM.
 

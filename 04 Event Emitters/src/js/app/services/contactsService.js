@@ -33,4 +33,4 @@
   })();
 
   App.contactsService = contactsService;
-})(jQuery, window.App, window)
+})(window.jQuery, window.App, window)

@@ -1,7 +1,7 @@
 (function initializeContactsModule($, React, ReactDOM, App) {
   'use strict';
 
-  var TableComponent = App.components.TableComponent;
+  var ContactsTableComponent = App.components.ContactsTableComponent;
   var contactsService = App.contactsService;
   var contacts;
 
@@ -9,7 +9,7 @@
 
     var createReactComponents = function () {
       ReactDOM.render(
-        <TableComponent />,
+        <ContactsTableComponent />,
         $('#tableComponent').get(0)
       );
     };
@@ -17,7 +17,7 @@
     var getContactObject = function (contact) {
       return {
         name: contact.txtName || null,
-        phone: contact.txtPhone || null,
+        phone: parseInt(contact.txtPhone) || null,
         email: contact.txtEmail || null
       };
     };
@@ -74,6 +74,6 @@
   })();
 
   App.contactsModule = contactsModule;
-})(jQuery, React, ReactDOM, window.App);
+})(window.jQuery, window.React, window.ReactDOM, window.App);
 
 

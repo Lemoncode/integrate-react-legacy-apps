@@ -1,17 +1,11 @@
-(function initializeTableComponent(React, App) {
+(function initializeContactsTableComponent(React, App) {
   'use strict';
 
-  var createRow = function (contact, index) {
-    return (
-      <tr key={index}>
-        <td>{contact.name}</td>
-        <td>{contact.phone}</td>
-        <td>{contact.email}</td>
-      </tr>
-    );
-  };
+  var ContactPropTypes = App.PropTypes.ContactPropTypes;
+  var ContactRowComponent = App.components.ContactRowComponent;
 
-  var TableComponent = React.createClass({
+  var ContactsTableComponent = React.createClass({
+    displayName: 'ContactsContactsTableComponent',
     onAddContact: function (contact) {
       this.setState({
         contacts: this.state.contacts.concat(contact)
@@ -39,23 +33,19 @@
             </tr>
           </thead>
           <tbody>
-            {this.state.contacts.map(createRow)}
+            {this.state.contacts.map(function (contact, index) {
+              return <ContactRowComponent key={index} contact={contact} />;
+            })}
           </tbody>
         </table>
       );
     }
   });
 
-  TableComponent.propTypes = {
-    contacts: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        name: React.PropTypes.string.isRequired,
-        phone: React.PropTypes.string.isRequired,
-        email: React.PropTypes.string.isRequired
-      })
-    )
+  ContactsTableComponent.propTypes = {
+    contacts: React.PropTypes.arrayOf(ContactPropTypes)
   };
 
-  App.components.TableComponent = TableComponent;
-})(React, window.App);
+  App.components.ContactsTableComponent = ContactsTableComponent;
+})(window.React, window.App);
 
