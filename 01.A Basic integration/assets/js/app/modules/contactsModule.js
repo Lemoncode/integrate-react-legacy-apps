@@ -1,7 +1,7 @@
 (function initializeContactsModule($, React, ReactDOM, App) {
   'use strict';
 
-  var TableComponent = App.components.TableComponent;
+  var ContactsTableComponent = App.components.ContactsTableComponent;
   var contactsService = App.contactsService;
 
   var contactsModule = (function () {
@@ -13,7 +13,7 @@
 
           // Pass contacts to TableComponent
           ReactDOM.render(
-            React.createElement(TableComponent, { contacts: fetchedContacts }),
+            React.createElement(ContactsTableComponent, { contacts: fetchedContacts }),
             $('#tableComponent').get(0)
           );
         });
@@ -29,6 +29,6 @@
   })();
 
   App.contactsModule = contactsModule;
-})(jQuery, React, ReactDOM, window.App);
+})(window.jQuery, window.React, window.ReactDOM, window.App);
 
 

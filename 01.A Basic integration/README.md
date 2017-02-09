@@ -37,7 +37,7 @@ Then we'll remove`domUtils.js` helper as we only needed it to render the table. 
 ...
 ```
 
-After that we will create a namespace called `components` inside our `App.js` to hold our React components:
+After that we will create a namespace called `components` inside our `App.js` to hold our React components, and `PropTypes`, that will hold our properties validation for our components:
 
 ```javascript
 (function initializeApp(window) {
@@ -45,12 +45,13 @@ After that we will create a namespace called `components` inside our `App.js` to
 
   var App = {};
   App.components = {};
+  App.PropTypes = {};
 
   window.App = App;
 })(window);
 ```
 
-Let's write our React `TableComponent`, first we'll create a `components` folder and a `TableComponent.js` file inside it. Our folders tree should look like this:
+Let's write our React `TableComponent`, first we'll create a `components` folder inside `app` folder. Then create inside it three files: `ContactsTableComponent.js` that will be our table, `ConctactRowComponent.js`, that will be a reusable row, and `ContactPropTypes.js` that will be the contact typechecking definition for our table components. Our folders tree should look like this:
 
 ```
 .
@@ -61,7 +62,9 @@ Let's write our React `TableComponent`, first we'll create a `components` folder
 │       ├── app
 │       │   ├── App.js
 │       │   ├── components
-│       │   │   └── TableComponent.js
+│       │   │   ├── ContactPropTypes.js
+│       │   │   ├── ContactRowComponent.js
+│       │   │   └── ContactsTableComponent.js
 │       │   ├── modules
 │       │   │   └── contactsModule.js
 │       │   └── services
@@ -70,120 +73,101 @@ Let's write our React `TableComponent`, first we'll create a `components` folder
 └── index.html
 ```
 
-## Defining our table component
+## Defining our components
 
-Let's write our React `TableComponent`. This will need two dependencies, React to be created and App to be exposed so we'll define our component and wrap it in an _IIFE _(Immediately Invoked Function Expression) and pass this dependencies:
+Let's define the validation for contact. This will need two main dependencies, `React` to use its typecheckers, and `App` to export the component so we'll define our component and wrap it in an _IIFE _(Immediately Invoked Function Expression), pass this dependencies and export the definition in `App.PropTypes` subnamespace. Our contact model will have three required attributes, a name as `string`, phone as `number` and `email` as string:
 
 ```javascript
-// TableComponent.js
-(function initializeTableComponent(React, App) {
+(function initializeContactPropTypes(React, App) {
   'use strict';
 
-  var TableComponent = function(props) {
+  var ContactPropTypes = React.PropTypes.shape({
+    name: React.PropTypes.string.isRequired,
+    phone: React.PropTypes.number.isRequired,
+    email: React.PropTypes.string.isRequired
+  });
 
+  App.PropTypes.ContactPropTypes = ContactPropTypes;
+})(window.React, window.App);
+```
+
+Next let's write the `ContactRowComponent`. We'll wrap it inside an _IIFE_ with React and App as dependencies and create a stateless component using a function that receives a contact inside `props` parameter and returns a row with the contact information:
+
+```javascript
+(function initializeContactRowComponent(React, App) {
+  'use strict';
+
+  var ContactPropTypes = App.PropTypes.ContactPropTypes;
+
+  var ContactRowComponent = function (props) {
+    var contact = props.contact || {};
+    return React.createElement('tr', null,
+      React.createElement('td', null, contact.name),
+      React.createElement('td', null, contact.phone),
+      React.createElement('td', null, contact.email)
+    )
   };
 
-  App.components.TableComponent = TableComponent;
+  ContactRowComponent.displayName = 'ContactRowComponent';
+  ContactRowComponent.propTypes = {
+    contact: ContactPropTypes
+  };
+
+  App.components.ContactRowComponent = ContactRowComponent;
+})(window.React, window.App);
+```
+
+Then we'll create the `ContactsTableComponent`. It will need a contacts array from props to render the table:
+
+```javascript
+(function initializeContactsTableComponent(React, App) {
+  'use strict';
+
+  var ContactRowComponent = App.components.ContactRowComponent;
+  var ContactPropTypes = App.PropTypes.ContactPropTypes;
+
+  var ContactsTableComponent = function (props) {
+    var contacts = props.contacts || [];
+    return React.createElement(
+      'table',
+      { className: 'table table-stripped table-bordered table-hover' },
+      React.createElement('thead', null,
+        React.createElement('tr', null,
+          React.createElement('th', null, 'Name'),
+          React.createElement('th', null, 'Phone number'),
+          React.createElement('th', null, 'Email')
+        )
+      ),
+      React.createElement('tbody', null,
+        contacts.map(function (contact, index) {
+          return React.createElement(ContactRowComponent, {
+            contact: contact,
+            key: index
+          });
+        })
+      )
+    );
+  }
+
+  ContactsTableComponent.displayName = 'ContactsTableComponent';
+  ContactsTableComponent.propTypes = {
+    contacts: React.PropTypes.arrayOf(ContactPropTypes)
+  };
+
+  App.components.ContactsTableComponent = ContactsTableComponent;
 })(React, window.App);
 ```
 
-Our component will need a contacts array from props to render the table. Let's add some `propTypes` validation right below the `TableComponent` definition:
+> As you can see, writing React components using ECMAScript 5 is a little bit verbose and confusing at indentation level because of `React.createElement`. In the next sample we will see how to integrate JSX in our project to enhace the readability of our component and speed the creation process:
 
-```javascript
-TableComponent.propTypes = {
-  contacts: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      name: React.PropTypes.string.isRequired,
-      phone: React.PropTypes.string.isRequired,
-      email: React.PropTypes.string.isRequired
-    })
-  )
-};
-```
-
-Since we are going to use ECMAScript5 to write our component we're going to add some private methods to build the table. In the next sample we will see how to integrate JSX in our project to enhace the readability of our component and speed the creation process:
-
-- Let's create a `createCell` method with two parameters, **type** that will be a table cell `<td>` or `<th>`, and **text** that will show the content of the cell. This method will return a `ReactElement`:
-
-  ```javascript
-  ...
-  var createCell = function (type, text) {
-    return React.createElement(type, null, text);
-  };
-
-  var TableComponent = function(props) {
-  ...
-  ```
-
-- Then add a `createRow` method that will return the `<tr>` row calling `createCell` method:
-
-  ```javascript
-  ...
-  var createRow = function (cell, index, contact) {
-    return React.createElement('tr', { key: index },
-      createCell(cell, contact.name),
-      createCell(cell, contact.phone),
-      createCell(cell, contact.email)
-    );
-  };
-
-  var TableComponent = function(props) {
-  ...
-  ```
-
-- Let's create the `createHead` method that returns a `<thead>` React element. This will call `createRow` method passing it the template with `null` props as it's there will be only one `<tr>`:
-
-  ```javascript
-  ...
-  var createHead = function () {
-    var contactTemplate = {
-      name: 'Name',
-      phone: 'Phone number',
-      email: 'Email'
-    };
-    return React.createElement('thead', null, createRow('th', null, contactTemplate));
-  };
-
-  var TableComponent = function(props) {
-  ...
-  ```
-
-- Time to create the `<tbody>`,  let's write a `createBody` method that will returns the `<tbody>` This method will need an array of contacts:
-
-  ```javascript
-  ...
-  var createBody = function (contacts) {
-    var rows = contacts.map(function (contact, index) {
-      return createRow('td', index, contact);
-    });
-    return React.createElement('tbody', null, rows);
-  };
-
-  var TableComponent = function(props) {
-  ...
-  ```
-
-- We'll finish the table creation writting the `render` method that will create a `<table>` with `<thead>` and `<tbody`:
-
-  ```javascript
-  ...
-  },
-  var TableComponent = function(props) {
-    return React.createElement('table',
-      { className: 'table table-stripped table-bordered table-hover' },
-      createHead(),
-      createBody(this.state.contacts)
-    );
-  };
-  ...
-  ```
-
-- Finally let's include our `TableComponent` in our `index.html`:
+Finally let's include our contacts table files in our `index.html`:
 
   ```html
-  ...
+      ...
       <script src="./assets/js/app/App.js"></script>
-      <script src="./assets/js/app/components/TableComponent.js"></script>
+      <script src="./assets/js/app/components/ContactPropTypes.js"></script>
+      <script src="./assets/js/app/components/ContactRowComponent.js"></script>
+      <script src="./assets/js/app/components/ContactsTableComponent.js"></script>
       <script src="./assets/js/app/services/contactsService.js"></script>
       <script src="./assets/js/app/modules/contactsModule.js"></script>
       <script src="./assets/js/index.js"></script>
@@ -201,11 +185,12 @@ Let's jump into our `contactsModule.js` and make some changes:
   (function initializeContactsModule($, React, ReactDOM, App) {
     'use strict';
 
-    var TableComponent = App.components.TableComponent;
+    var ContactsTableComponent = App.components.ContactsTableComponent;
     var contactsService = App.contactsService;
 
-  ...
-  })(jQuery, React, ReactDOM, window.App);
+    ...
+
+  })(window.jQuery, window.React, window.ReactDOM, window.App);
   ```
 - Then remove the `showContacts` method and replace its call by `ReactDOM.render` to mount our `TableComponent` component:
 
@@ -229,6 +214,6 @@ After all this changes, we should get our `TableComponent` integrated in our jQu
 
 ## How it works?
 
-1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`, setting the form `onSubmit` handler and initially mounting `TableComponent` which creates its own state with an empty array of contacts.
+1. When page loads `contactsModule.run` method is called requesting contacts data from `contactsService`.
 
-2. When `fetchContacts` is completed `TableComponent` is mounted with the new contacts. This results in rendering the table with contacts.
+2. When `fetchContacts` is completed `TableComponent` is mounted receiving fetched contacts transforms from `props` and transforming them into a table with rows containing each contact information.
