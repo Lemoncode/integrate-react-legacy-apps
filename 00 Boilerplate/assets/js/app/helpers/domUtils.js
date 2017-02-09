@@ -28,4 +28,4 @@
   })();
 
   App.domUtils = domUtils;
-})(jQuery, window.App);
+})(window.jQuery, window.App);
