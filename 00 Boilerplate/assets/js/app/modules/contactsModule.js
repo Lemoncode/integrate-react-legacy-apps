@@ -30,4 +30,4 @@
   })();
 
   App.contactsModule = contactsModule;
-})(jQuery, window.App);
+})(window.jQuery, window.App);

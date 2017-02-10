@@ -4,4 +4,4 @@
   $(function main() {
     App.contactsModule.run();
   });
-})(jQuery, window.App);
+})(window.jQuery, window.App);

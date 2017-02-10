@@ -27,7 +27,7 @@ App is structured as follows:
 
 ## How it works?
 
-1. When DOM is loaded our `index.js` file loads the `run` method of our `Contacts` module.
+1. When DOM is loaded our `index.js` file loads the `run` method of our `contactsModule` module.
 
 2. This method calls `fetchContacts` that calls our `contactsService` to get an array of contacts.
 
