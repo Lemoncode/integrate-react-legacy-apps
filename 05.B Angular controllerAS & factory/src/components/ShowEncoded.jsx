@@ -1,6 +1,7 @@
 (function (angular, React) {
   'use strict';
 
+  // React component definition
   var ShowEncoded = function (props) {
     return (
       <div>
@@ -16,5 +17,10 @@
     encoded: React.PropTypes.string.isRequired
   };
 
-  angular.module('app').value('ShowEncoded', ShowEncoded);
+  // AngularJS directive definition
+  var showEncoded = function (reactDirective) {
+    return reactDirective(ShowEncoded);
+  };
+
+  angular.module('app').directive('showEncoded', ['reactDirective', showEncoded]);
 })(window.angular, window.React);
