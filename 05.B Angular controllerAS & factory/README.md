@@ -57,4 +57,4 @@ Finally let's change our implementation in `index.html`:
 </div>
 ```
 
-We've implemented our first component using `controlerAs` syntax and `react-component` directive. In the next sample we'll see how to implement the same sample using component oriented and `react-component` directive.
+We've implemented our first component using `controlerAs` syntax and `reactDirectove` factory. In the next sample we'll see how to implement the same sample using component oriented and `react-component` directive.
