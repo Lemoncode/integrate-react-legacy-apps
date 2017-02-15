@@ -12,7 +12,7 @@
       <h1 class="text-center">controllerAS syntax + react-component</h1>
     </header>
     <main class="container">
-      <div ng-controller="Main as ctrl">
+      <section ng-controller="Main as ctrl">
         <form class="col-md-5" action="#" ng-submit="ctrl.encode($event)">
           <h3>Base64 encoder</h3>
           <div class="form-group">
@@ -26,7 +26,7 @@
         <div class="col-md-8">
           <show-encoded encoded="ctrl.encodedText" watch-depth="reference" />
         </div>
-      </div>
+      </section>
     </main>
     <script src="./node_modules/angular/angular.js"></script>
     <script src="./node_modules/react/dist/react.js"></script>
