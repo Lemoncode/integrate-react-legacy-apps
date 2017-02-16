@@ -1,0 +1,19 @@
+.container, .container-fluid {
+  margin-top: 50px;
+  overflow: hidden;
+}
+
+.panel-body.collapsible {
+  transition: max-height .20s ease-in-out, padding-top .20s ease-in-out, padding-bottom .20s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.panel-body.collapsible.in {
+  transition: max-height .35s ease-in-out, padding-top .35s ease-in-out, padding-bottom .35s ease-in-out;
+  max-height: 200px;
+  overflow: auto;
+  padding: 15px;
+}

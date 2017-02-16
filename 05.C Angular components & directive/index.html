@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="UTF-8">
+    <title>05.A Angular integration</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./dist/css/styles.css">
+  </head>
+  <body>
+    <header>
+      <h1 class="text-center">Component based + react-component</h1>
+    </header>
+    <main class="container">
+      <div class="col-sm-8">
+        <accordion>
+          <accordion-pane heading="Panel 1">
+            <h4>Panel 1 content</h4>
+          </accordion-pane>
+          <accordion-pane heading="Panel 2">
+            <h4>Panel 2 content</h4>
+          </accordion-pane>
+          <accordion-pane heading="Panel 3">
+            <h4>Panel 3 content</h4>
+          </accordion-pane>
+        </accordion>
+      </div>
+    </main>
+    <script src="./node_modules/angular/angular.js"></script>
+    <script src="./node_modules/react/dist/react.js"></script>
+    <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="./node_modules/ngreact/ngReact.js"></script>
+    <script src="./dist/app.module.js"></script>
+    <script src="./dist/components/accordion/accordion.js"></script>
+    <script src="./dist/components/accordion/accordion-panel/accordion-panel.js"></script>
+  </body>
+</html>
