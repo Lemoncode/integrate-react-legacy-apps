@@ -24,7 +24,9 @@
   angular
     .module('app')
     .component('accordion', {
-      transclude: true,
+      bindings: {
+        feeds: '<'
+      },
       templateUrl: './dist/components/accordion/accordion.html',
       controller: AccordionController
     });

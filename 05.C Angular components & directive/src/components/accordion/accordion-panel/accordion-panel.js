@@ -3,6 +3,7 @@
 
   function AccordionPane() {
     var self = this;
+    var selected = false;
 
     self.$onInit = function () {
       self.parent.addPanel(self);
@@ -13,24 +14,29 @@
     };
 
     self.show = function () {
-      self.selected = 'in';
+      if (selected) {
+        self.hide();
+      } else {
+        selected = true;
+        self.active = 'in';
+      }
     };
 
     self.hide = function () {
-      self.selected = '';
+      selected = false;
+      self.active = '';
     };
   }
 
   angular
     .module('app')
-    .component('accordionPane', {
+    .component('accordionPanel', {
       bindings: {
-        heading: '@'
+        feed: '<'
       },
       require: {
         parent: '^accordion'
       },
-      transclude: true,
       templateUrl: './dist/components/accordion/accordion-panel/accordion-panel.html',
       controller: AccordionPane
     });

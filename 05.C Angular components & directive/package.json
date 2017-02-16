@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/Lemoncode/integrate-react-legacy-apps.git",
-  "author": "Lemoncode",
+  "author": "Lemoncode <info@lemoncode.net>",
   "license": "MIT",
   "scripts": {
-    "build": "gulp build",
-    "build:watch": "gulp"
+    "start": "gulp",
+    "build": "gulp build"
   },
   "dependencies": {
     "angular": "1.6.1",

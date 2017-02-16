@@ -4,16 +4,30 @@
 }
 
 .panel-body.collapsible {
-  transition: max-height .20s ease-in-out, padding-top .20s ease-in-out, padding-bottom .20s ease-in-out;
+  transition: all .30s ease-out;
   max-height: 0;
   overflow: hidden;
   padding-top: 0;
   padding-bottom: 0;
 }
 
+
 .panel-body.collapsible.in {
-  transition: max-height .35s ease-in-out, padding-top .35s ease-in-out, padding-bottom .35s ease-in-out;
-  max-height: 200px;
-  overflow: auto;
-  padding: 15px;
+  max-height: 100px;
+  transition: all .30s ease-out;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.panel-body.collapsible > * {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.panel-body.collapsible > *:first-child {
+  margin-top: 15px;
+}
+
+.panel-body.collapsible > *:last-child {
+  margin-bottom: 15px;
 }
