@@ -6,18 +6,22 @@
 
     self.feeds = [
       {
+        id: 32,
         heading: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, odio!',
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati vel, officia saepe cumque culpa alias quisquam rem repudiandae omnis dolorum doloremque, dicta pariatur unde iusto ex, eos neque laboriosam voluptatum.'
       },
       {
+        id: 33,
         heading: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione, ad!',
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam eum et ea harum laborum temporibus ab voluptates sunt, maxime dolore quas consequuntur vitae quos expedita nostrum quidem, minus, rem sit.'
       },
       {
+        id: 34,
         heading: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, atque.',
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet, tempore aut consequuntur autem, repellat iste doloremque quibusdam sunt quos! At minus dicta debitis doloremque dolorem unde, maxime facilis voluptatum quam!'
       },
       {
+        id: 35,
         heading: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, asperiores!',
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, omnis dolores tempora officia consequuntur ratione sequi aliquid porro aut quisquam quas obcaecati facere assumenda minima odit reiciendis laboriosam natus! Eum!'
       },
