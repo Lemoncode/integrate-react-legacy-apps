@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="UTF-8">
+    <title>05.A Angular integration</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./dist/css/styles.css">
+  </head>
+  <body>
+    <header>
+      <h1 class="text-center">controllerAS syntax + reactDirective</h1>
+    </header>
+    <main class="container">
+      <section ng-controller="Main as ctrl">
+        <form class="col-md-5" action="#" ng-submit="ctrl.encode($event)">
+          <h3>Base64 encoder</h3>
+          <div class="form-group">
+            <label for="txtMessage">Encode a text</label>
+            <input type="text" class="form-control" id="txtMessage" ng-model="ctrl.text" placeholder="Message to encode">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Encode</button>
+          </div>
+        </form>
+        <div class="col-md-8">
+          <show-encoded encoded="ctrl.encodedText" watch-depth="reference" />
+        </div>
+      </section>
+    </main>
+    <script src="./node_modules/angular/angular.js"></script>
+    <script src="./node_modules/react/dist/react.js"></script>
+    <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="./node_modules/ngreact/ngReact.js"></script>
+    <script src="./dist/app.module.js"></script>
+    <script src="./dist/controllers/main.controller.js"></script>
+    <script src="./dist/components/ShowEncoded.js"></script>
+  </body>
+</html>
