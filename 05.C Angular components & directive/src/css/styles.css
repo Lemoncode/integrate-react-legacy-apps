@@ -1,0 +1,28 @@
+.container, .container-fluid {
+  margin-top: 50px;
+  overflow: hidden;
+}
+
+.panel-body.collapsible {
+  transition: all .30s ease-out;
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+
+.panel-body.collapsible.in {
+  max-height: 100px;
+  transition: all .30s ease-out;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.feed-content {
+  margin-bottom: 0;
+}

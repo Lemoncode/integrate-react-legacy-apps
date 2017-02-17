@@ -1,0 +1,27 @@
+{
+  "name": "legacy-apps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Lemoncode/integrate-react-legacy-apps.git",
+  "author": "Lemoncode <info@lemoncode.net>",
+  "license": "MIT",
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp build"
+  },
+  "dependencies": {
+    "angular": "1.6.1",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "ngreact": "^0.3.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-preset-react": "^6.22.0",
+    "del": "^2.2.2",
+    "gulp": "gulpjs/gulp#4.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-connect": "^5.0.0"
+  }
+}
