@@ -29,10 +29,10 @@ This sample shows how to use Publish/Subscribe pattern with `jQuery.Callbacks()`
 
 This sample shows a basic Angular form and uses a React component to display a piece of the Angular model. It uses [ngReact](https://github.com/ngReact/ngReact) to use a directive that wrapps the React component.
 
-05.B Angular controllerAS & factory
+## 05.B Angular controllerAS & factory
 
 This sampl is based on the previous sample to show how to use ngReact library to expose the React component using the ngReact *reactDirective* factory.
 
-05.C Angular components & directive
+## 05.C Angular components & directive
 
 This sample uses how to replace an accordion of a web component based Angular application with a React accordion. it also uses ngReact for libraries communication.
