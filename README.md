@@ -2,7 +2,7 @@
 
 # The so feared migration
 
-The time has arrived... light After ten years developing on our beloved web technology (ASP.NET Web forms, PHP, ASP.NET MVC, Ruby...) someone from marketing department came with the following complaints about the web application:
+The time has arrived... After ten years developing on our beloved web technology (ASP.NET Web forms, PHP, ASP.NET MVC, Ruby...) someone from marketing department came with the following complaints about the web application:
 
 * Some customers want to be able to work from the sofa on their mobile devices but they can't, they need to have computer around.
 * Some customers cannot complete their orders.
