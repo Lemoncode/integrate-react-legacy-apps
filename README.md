@@ -13,8 +13,8 @@ That translates to our "language" as:
 
 * We have a poor web, not responsive and not adapted to mobile device interaction gestures.
 * We have so much logic in spaghetti JavaScript that it's impossible to manage, same reason why our application throws unexpected errors.
-* Our application is too dependant on server side taks that could simply be done on the client side.
-* Our application is too heavy and requires too much bandwith consumption, mobile battery and resources.
+* Our application is too dependant on server side tasks that could simply be done on the client side.
+* Our application is too heavy and requires too much bandwidth consumption, mobile battery and resources.
 
 The worst... this is happening with not so old technologies. Remember of Angular 1? Do you have performance issues?
 
@@ -24,20 +24,122 @@ Isn't there a way to migrate little by little?... **React to the rescue!**
 
 # React
 
-React is a light library to render user interface that has a [very good performance](),
-also it allows us to build our pages out of components.
-
-It allows us to replace some parts of a view and **work together with older libraries**. Let's see how:
+React is a light library for user interface rendering that has a [very good performance](),
+also it allows building pages out of components. It will make it possible to replace some parts of a view and **work together with older libraries**. Let's see how:
 
 ### Approximations
-All the examples below are public and available on the Lemoncode Github repository: [integrate-react-legacy-apps]()
+
+One can use the following approximations for progressively migrate a legacy application with React.
 
 * [Option 1 - Presentational React components with jQuery](#option-1)
 * [Option 2 - Stateful React components with jQuery](#option-2)
 * [Option 3 - Pub/Sub pattern through jQuery $.Callbacks](#option-3)
 * [Option 4 - React inside Angular 1.x with MVC architecture](#option-4)
 
+
+| All the examples below are public and available on this same repository [integrate-react-legacy-apps]()     |
+| --------------------------------------------------------------------------------------------------------------------- |
+
+
+
+
 ### <a name="option-1">Option 1 - Presentational React components with jQuery</a>
+
+Even though React and jQuery are two very different libraries used for solving different problems in different ways (jQuery is based on direct DOM manipulation while React aims to avoiding DOM manipulation as much as possible) they are both capable to coexist.
+
+ A basic example would be having a module that requests server data right on initialization and pushes this data into a table rendered to the user.
+
+![Image option 1.1](https://static1.squarespace.com/static/56cdb491a3360cdd18de5e16/t/58b6fda1bebafb0976fe11ea/1488387495490/?format=750w)
+
+We can create a small function extending jQuery prototype and allowing, for a given selector, to load a React component over that same element.
+
+```
+$.fn.extend({
+  react: function (Component, props, callback) {
+    var mountedComponent = ReactDOM.render(
+      <Component {...props} />,
+      this.get(0)
+    );
+
+    if (typeof callback === 'function') {
+      return callback(mountedComponent);
+    }
+
+    return mountedComponent;
+  }
+});
+```
+
+From now, calling the ```react``` function over a jQuery selected element, will [load](append?replace?) the passed in React component in the DOM node of the element.
+
+For the current example we will mount the ```ContactsTableComponent``` React component with the following code:
+
+```
+var ContactsTableComponent = App.components.ContactsTableComponent;
+var contacts, $mountedTableComponent;
+
+// Initialize components
+var createReactComponents = function () {
+  $mountedContactsTableComponent = $('#tableComponent');
+  showContacts(null); // First render with no data
+};
+
+// Fill table, then mount/update React component
+var showContacts = function (contacts, callback) {
+  $mountedContactsTableComponent.react(ContactsTableComponent, { contacts: contacts || [] }, callback);
+};
+```
+
+This implementation uses the jQuery selectors as an entry for embedding React components. The model data is stored in the page and loaded to the React component through **properties**.
+
+And the React component definition:
+
+```
+var ContactPropTypes = App.PropTypes.ContactPropTypes;
+var ContactRowComponent = App.components.ContactRowComponent;
+
+var ContactsTableComponent = function (props) {
+  var contacts = props.contacts || [];
+  return (
+    <table className="table table-stripped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone number</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {contacts.map(function (contact, index) {
+          return <ContactRowComponent key={index} contact={contact} />;
+        })}
+      </tbody>
+    </table>
+  );
+};
+
+ContactsTableComponent.displayName = 'ContactsTableComponent';
+ContactsTableComponent.propTypes = {
+  contacts: React.PropTypes.arrayOf(ContactPropTypes)
+};
+```
+
+This way, when responding to an AJAX request for the component data, it can get updated by calling the ```showContacts``` function with the response data:
+
+```
+var fetchContacts = function () {
+  $.when(contactsService.fetchContacts())
+    .then(function (fetchedContacts) {
+    showContacts(fetchedContacts);
+  });
+};
+```
+
+![Image Option 1.2](https://static1.squarespace.com/static/56cdb491a3360cdd18de5e16/t/58b700859f74569e0581b942/1488388248574/?format=750w)
+
+
+| This example source code is available at [02 Props and Render](https://github.com/Lemoncode/integrate-react-legacy-apps/tree/master/02%20Props%20and%20Render)     |
+| :---------------------------------------------------------------------------------------------------------------------: |
 
 
 ### <a name="option-2">Option 2 - Stateful React components with jQuery</a>
@@ -45,6 +147,7 @@ All the examples below are public and available on the Lemoncode Github reposito
 ### <a name="option-3">Option 3 - Pub/Sub pattern through jQuery $.Callbacks</a>
 
 ### <a name="option-4">Option 4 - React inside Angular 1.x with MVC architecture</a>
+
 
 
 
