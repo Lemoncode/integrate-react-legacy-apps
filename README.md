@@ -53,7 +53,7 @@ Even though React and jQuery are two very different libraries used for solving d
 
 We can create a small function extending jQuery prototype and allowing, for a given selector, to load a React component over that same element.
 
-```
+```javascript
 $.fn.extend({
   react: function (Component, props, callback) {
     var mountedComponent = ReactDOM.render(
@@ -74,7 +74,7 @@ From now, calling the ```react``` function over a jQuery selected element, will 
 
 For the current example we will mount the ```ContactsTableComponent``` React component with the following code:
 
-```
+```javascript
 var ContactsTableComponent = App.components.ContactsTableComponent;
 var contacts, $mountedTableComponent;
 
@@ -94,7 +94,7 @@ This implementation uses the jQuery selectors as an entry for embedding React co
 
 And the React component definition:
 
-```
+```javascript
 var ContactPropTypes = App.PropTypes.ContactPropTypes;
 var ContactRowComponent = App.components.ContactRowComponent;
 
@@ -126,7 +126,7 @@ ContactsTableComponent.propTypes = {
 
 This way, when responding to an AJAX request for the component data, it can get updated by calling the ```showContacts``` function with the response data:
 
-```
+```javascript
 var fetchContacts = function () {
   $.when(contactsService.fetchContacts())
     .then(function (fetchedContacts) {
@@ -144,7 +144,67 @@ var fetchContacts = function () {
 
 ### <a name="option-2">Option 2 - Stateful React components with jQuery</a>
 
+When we work with components it is usual to have components with more presentation logic and need to store an internal state. These are commonly named **container components**. A container component is just a component in charge of managing the state of a part of the application, in other words, it's in charge of business logic.
+
+ From jQuery we could then execute more actions apart from mounting, as accessing component properties and public methods, allowing component state changes.
+
+Then we would change ```showContacts``` function implementation as:
+
+```javascript
+var ContactsTableContainer = App.components.ContactsTableContainer;
+var contacts, $mountedContactsTableContainer;
+
+var createReactComponents = function () {
+    $mountedContactsTableContainer = $('#tableComponent').react(ContactsTableContainer, null);
+};
+
+var showContacts = function (contacts, callback) {
+  // Accessing React component API methods
+  $mountedContactsTableContainer.setState({ contacts: contacts });
+};
+```
+
+In this case the component instance, mounted by ReactDOM is stored in a variable. This way we can call it's method setState to modify the state.
+ It's important to mention that this call could be perfectly encapsulated in a public method implemented to do some validations right before changing the state.
+
+ This option can be useful in some scenarios, but it's not the best case scenario, since calling some lifecycle methods [in a wrong way](this needs explanation) can have unexpected effects.
+
+ It is more common that the React components are those who interact with each other through the methods inside their input properties.
+
+ ![Image Option 2.1](https://static1.squarespace.com/static/56cdb491a3360cdd18de5e16/t/58b7019c29687f41be932a36/1488388521762/?format=750w)
+
+
+| The complete implementation can be found at [03 Stateful Component](https://github.com/Lemoncode/integrate-react-legacy-apps/tree/master/03%20Stateful%20Component)     |
+| :---------------------------------------------------------------------------------------------------------------------: |
+
 ### <a name="option-3">Option 3 - Pub/Sub pattern through jQuery $.Callbacks</a>
+
+Publish-Subscribe pattern can be very useful for communicating React with jQuery since the actions sent by the communication channels can be sent to those functions subscribed to the channel without knowing anything about the rest of he listeners. Let's see how we could add a simple implementation of the Pub/Sub pattern by a method that can be accessed via jQuery:
+
+```javascript
+$.observe = (function () {
+  var subjects = {};
+  return function (id) {
+    var callbacks;
+    var subject = id && subjects[id];
+
+    if (!subject) {
+      callbacks = $.Callbacks();
+      subject = {
+        publish: callbacks.fire,
+        subscribe: callbacks.add,
+        unsubscribe: callbacks.remove
+      };
+     if (id) {
+        subjects[id] = subject;
+      }
+    }
+    return subject;
+  };
+})();
+```
+
+
 
 ### <a name="option-4">Option 4 - React inside Angular 1.x with MVC architecture</a>
 
