@@ -34,7 +34,8 @@ One can use the following approximations for progressively migrate a legacy appl
 * [Option 1 - Presentational React components with jQuery](#option-1)
 * [Option 2 - Stateful React components with jQuery](#option-2)
 * [Option 3 - Pub/Sub pattern through jQuery $.Callbacks](#option-3)
-* [Option 4 - React inside Angular 1.x with MVC architecture](#option-4)
+* [Option 4 - React inside MVC based Angular 1.x applications](#option-4)
+* [Option 5 - React inside components based Angular 1.x applications](#option-5)
 
 
 | All the examples below are public and available on this same repository [integrate-react-legacy-apps]()     |
@@ -376,8 +377,232 @@ This way our component can be added to the form as:
 
 ![Image option 4.1](https://static1.squarespace.com/static/56cdb491a3360cdd18de5e16/t/58b6feaff5e23157a3f8c5af/1488387768685/?format=750w)
 
+| The complete implementation can be found at [ 05.B Angular controllerAS & factory.](https://github.com/Lemoncode/integrate-react-legacy-apps/tree/master/05.B%20Angular%20controllerAS%20%26%20factory)     |
+| :---------------------------------------------------------------------------------------------------------------------: |
 
 
+### <a name="option-5">Option 5 - React inside components based Angular 1.x applications</a>
+
+From Angular 1.5 it is possible to use angular.component to make our app out of components. The application can be based on components that work as small reusable pieces.
+We'll picture this with an example of an acordion component built in Angular that we want to migrate to React.
+
+### Acordion Controller
+
+```javascript
+function AccordionController() {
+  var self = this;
+  var panels = [];
+
+  self.addPanel = function (panel) {
+    panels.push(panel);
+    if (panels.length) {
+      panels[0].show();
+    }
+  };
+
+  self.select = function (selectedPanel) {
+    panels.forEach(function (panel) {
+      if (panel === selectedPanel) {
+        panel.show();
+      } else {
+        panel.hide();
+      }
+    });
+  };
+}
+
+angular
+  .module('app')
+  .component('accordion', {
+    bindings: {
+      feeds: '<'
+    },
+    templateUrl: './dist/components/accordion/accordion.html',
+    controller: AccordionController
+  });
+```
+
+##### Accordion Template
+
+```html
+<!-- components/accordion/accordion.html -->
+<div class="panel-group" role="tablist">
+  <accordion-panel ng-repeat="feed in $ctrl.feeds track by $index" feed="feed" />
+</div>
+```
+
+This accordion will render a set of panels containing the received feeds from a parent component. The panel is just another reusable component with a controller and a template defined as:
+
+```javascript
+function AccordionPanel() {
+  var self = this;
+  var selected = false;
+
+  self.$onInit = function () {
+    self.parent.addPanel(self);
+  };
+
+  self.select = function () {
+    self.parent.select(self);
+  };
+
+  self.show = function () {
+    if (selected) {
+      self.hide();
+    } else {
+      selected = true;
+      self.active = 'in';
+    }
+  };
+
+  self.hide = function () {
+    selected = false;
+    self.active = '';
+  };
+}
+
+angular
+  .module('app')
+  .component('accordionPanel', {
+    bindings: {
+      feed: '<'
+    },
+    require: {
+      parent: '^accordion'
+    },
+    templateUrl: './dist/components/accordion/accordion-panel/accordion-panel.html',
+    controller: AccordionPanel
+  });
+```
+
+##### AccordionPanel Template
+
+```html
+<!-- components/accordion/accordion-panel.html -->
+<div class="panel panel-default">
+  <div class="panel-heading" style="cursor: pointer" ng-click="$ctrl.select()" role="panel">
+    <h3 class="panel-title">{{$ctrl.feed.heading}}</h3>
+  </div>
+  <div class="panel-body collapsible" ng-class="$ctrl.active">
+    <p class="feed-content">{{$ctrl.feed.content}}</p>
+  </div>
+</div>
+```
+
+##### Use of the component
+
+```
+<main class="container">
+  <div class="col-sm-9">
+    <accordion feeds="$ctrl.feeds" />
+  </div>
+</main>
+```
+
+#### React migration
+
+Let's see how the accordion could be replaced by a React component
+
+```javascript
+var Accordion = function (AccordionPanel) {
+  return React.createClass({
+    displayName: 'Accordion',
+    getInitialState: function () {
+      return {
+        selected: null
+      };
+    },
+    render: function () {
+      var feeds = this.props.feeds || [];
+      var selected = this.state.selected;
+      var self = this;
+      return (
+        <div className="panel-group" role="tablist">
+          <h1>{this.props.foo}</h1>
+          {feeds.map(function (feed, index) {
+            return (
+              <AccordionPanel
+                active={selected === feed.id}
+                onSelect={self.select}
+                key={index}
+                feed-id={index}
+                feed={feed}
+              />
+            );
+          })}
+        </div>
+      );
+    },
+    select: function (selected) {
+      if (selected === this.state.selected) {
+        selected = null;
+      }
+      this.setState({ selected });
+    }
+  });
+}
+
+angular
+  .module('app')
+  .factory('Accordion', ['AccordionPanel', Accordion]);
+```
+
+##### React Accordion Panel
+
+```javascript
+function AccordionPanel(props) {
+  var select = function () {
+    return props.onSelect(props.feed.id);
+  };
+  var className = 'panel-body collapsible';
+  if (props.active) {
+    className += ' in';
+  }
+  return (
+    <div className="panel panel-default">
+      <div className="panel-heading" style={{ cursor: 'pointer' }} onClick={select} role="panel">
+        <h3 className="panel-title">{props.feed.heading}</h3>
+      </div>
+      <div className={className}>
+        <p className="feed-content">{props.feed.content}</p>
+      </div>
+    </div>
+  );
+}
+
+AccordionPanel.displayName = 'AccordionPanel';
+AccordionPanel.propTypes = {
+  active: React.PropTypes.bool,
+  onSelect: React.PropTypes.func,
+  feed: React.PropTypes.shape({
+    id: React.PropTypes.number.isRequired,
+    heading: React.PropTypes.string,
+    content: React.PropTypes.string
+  })
+};
+
+angular
+  .module('app')
+  .value('AccordionPanel', AccordionPanel);
+```
+
+##### Use
+
+```html
+<main class="container">
+  <div class="col-sm-9">
+    <react-component name="Accordion" props="{feeds: $ctrl.feeds}" watch-depth="reference" />
+  </div>
+</main>
+```
+
+| The complete implementation can be found at [ 05.C Angular components & directive.](https://github.com/Lemoncode/integrate-react-legacy-apps/tree/master/05.C%20Angular%20components%20%26%20directive)     |
+| :---------------------------------------------------------------------------------------------------------------------: |
+
+## Conclusion
+
+React is a very complete and high performance library that allows very modular and scalable development, also it brings great tools for easier development like [React Developer Tools](https://github.com/facebook/react-devtools) or testing libraries like [Enzyme](https://github.com/airbnb/enzyme) or [Jest](https://facebook.github.io/jest/) to ensure application quality.
+Even though React itself does not provide all application parts, we have an available ecosystem that perfectly fit and cover all application development scopes like [Redux](https://github.com/reactjs/redux) for managing application state or [React-Router](https://github.com/ReactTraining/react-router) for routing and synchronizing components with navigation. Furthermore, one can reuse components to build hybrid applications with [React Native.](https://facebook.github.io/react-native/)
 # Integrate React legacy apps
 The goal of this project is provide a set of samples covering concepts to migrate from a legacy app to React.
 
