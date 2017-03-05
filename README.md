@@ -179,6 +179,7 @@ In this case the component instance, mounted by ReactDOM is stored in a variable
 
 ### <a name="option-3">Option 3 - Pub/Sub pattern through jQuery $.Callbacks</a>
 
+// Note: Improve this intro.
 Publish-Subscribe pattern can be very useful for communicating React with jQuery since the actions sent by the communication channels can be sent to those functions subscribed to the channel without knowing anything about the rest of he listeners. Let's see how we could add a simple implementation of the Pub/Sub pattern by a method that can be accessed via jQuery:
 
 ```javascript
@@ -204,11 +205,176 @@ $.observe = (function () {
 })();
 ```
 
+The ```subject``` object stores the communication channel and exposes the *publish*, *subscribe* and *unsubscribe* actions.
+In this pattern implementation, React components subscribe and un-subscribe to the communication channel inside the ```componentDidMount``` and ```componentWillUnmount``` lifecycle methods.
+
+```javascript
+var ContactPropTypes = App.PropTypes.ContactPropTypes;
+var ContactsTableComponent = App.components.ContactsTableComponent;
+
+var ContactsTableContainer = React.createClass({
+  displayName: 'ContactsTableContainer',
+  onAddContact: function (contact) {
+    this.setState({
+      contacts: this.state.contacts.concat(contact)
+    });
+  },
+  componentDidMount: function () {
+    $.observe('addContacts').subscribe(this.onAddContact);
+  },
+  componentWillUnmount: function () {
+    $.observe('addContacts').unsubscribe(this.onAddContact);
+  },
+  getInitialState: function () {
+    return {
+      contacts: []
+    };
+  },
+  render: function () {
+    return <ContactsTableComponent contacts={this.state.contacts} />;
+  }
+});
+```
+
+The component exposes a method, in this case the ```onAddContact``` method, that modifies the component state when $.observe('<channel-name>').publish method is called where <channel-name> is 'addContacts'. This way, when our application needs to change the component state, we just have to send the data through this channel. As an example:
+
+ ```javascript
+var fetchContacts = function () {
+  $.when(contactsService.fetchContacts())
+    .then(function (fetchedContacts) {
+      contacts = fetchedContacts;
+      $.observe('addContacts').publish(contacts);
+    });
+};
+ ```
+
+And when publishing to 'addContacts' channel, the contacts are received through the ```onAddContact``` method, changing its state and activating its lifecycle events like ```render``` resulting in an HTML change.
+
+By using this pattern, it is not necessary to store component instances in the module. ¿¿??
+
+```javascript
+var ContactsTableContainer = App.components.ContactsTableContainer;
+var contacts;
+
+var createReactComponents = function () {
+  ReactDOM.render(
+    <ContactsTableContainer />,
+    $('#tableComponent').get(0)
+  );
+};
+```
+
+![Image option 3.1](https://static1.squarespace.com/static/56cdb491a3360cdd18de5e16/t/58b6fcc21b631b3f18ac39cd/1488387283256/?format=750w)
+
+
+| The complete implementation can be found at [ 04 Event Emitters](https://github.com/Lemoncode/integrate-react-legacy-apps/tree/master/04%20Event%20Emitters)     |
+| :---------------------------------------------------------------------------------------------------------------------: |
 
 
 ### <a name="option-4">Option 4 - React inside Angular 1.x with MVC architecture</a>
 
+AngularJS allows components creation as a directive and it makes it easier to integrate React components thanks to the ngReact library that provides the ```react-component``` directive and the ```reactDirective``` factory.
 
+ We will demonstrate with a small example where we have a small form requesting data to be codified in base64. We will integrate a React component to show its result by using ```react-component```:
+
+##### Form (index.html)
+
+ ```html
+<section ng-controller="Main as ctrl">
+  <form class="col-md-5" action="#" ng-submit="ctrl.encode($event)">
+    <h3>Base64 encoder</h3>
+    <div class="form-group">
+      <label for="txtMessage">Encode a text</label>
+      <input type="text" class="form-control" id="txtMessage" ng-model="ctrl.text" placeholder="Message to encode">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-block">Encode</button>
+    </div>
+  </form>
+  <div class="col-md-8">
+    <!-- React Component here to visualize encoded text -->
+  </div>
+</section>
+ ```
+
+##### App module
+
+We create the module with a dependency of ngReact.
+```
+angular.module('app', ['react']);
+```
+
+##### Controller
+
+And the controller to store the model.
+```javascript
+// src/controllers/main-controller.js
+function Main() {
+  var self = this;
+  self.text = '';
+  self.encodedText = '';
+  self.encode = function (event) {
+    event.preventDefault();
+    self.encodedText = btoa(self.text);
+    self.text = '';
+  };
+}
+angular.module('app').controller('Main', [Main]);
+```
+
+##### React component
+
+And finally the React component that will receive the codified text through ```props``` properties.
+
+```javascript
+var ShowEncoded = function (props) {
+  return (
+    <div>
+      <h4><strong>Encoded text</strong></h4>
+      <pre>{props.encoded || 'Nothing written'}</pre>
+    </div>
+  );
+};
+
+ShowEncoded.propTypes = {
+  encoded: React.PropTypes.string.isRequired
+};
+
+// Store React component in Angular module
+angular.module('app').value('ShowEncoded', ShowEncoded);
+```
+
+##### Calling the component
+To call the component we just have to add the react-component tag in the form as:
+
+```html
+<react-component name="ShowEncoded" props="{encoded: ctrl.encodedText}" watch-depth="reference" />
+```
+
+Internally ngReact delegates the model properties to the component through ```props``` attribute when they change, making it to be updated. Quite simple, right?
+
+
+| The complete implementation can be found at [ 05.A Angular controllerAS & Directive.](https://github.com/Lemoncode/integrate-react-legacy-apps/tree/master/05.A%20Angular%20controllerAS%20%26%20directive)     |
+| :---------------------------------------------------------------------------------------------------------------------: |
+
+Another way to add a component to our Angular application is changing the component export using ngReact ```reactDirective``` factory.
+
+```javascript
+// AngularJS directive definition
+var showEncoded = function (reactDirective) {
+  return reactDirective(ShowEncoded);
+};
+
+angular.module('app').directive('showEncoded', ['reactDirective', showEncoded]);
+```
+
+This way our component can be added to the form as:
+
+```html
+<show-encoded encoded="ctrl.encodedText" watch-depth="reference" />
+```
+
+![Image option 4.1](https://static1.squarespace.com/static/56cdb491a3360cdd18de5e16/t/58b6feaff5e23157a3f8c5af/1488387768685/?format=750w)
 
 
 
