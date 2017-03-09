@@ -24,7 +24,7 @@ Isn't there a way to migrate little by little?... **React to the rescue!**
 
 # React
 
-React is a light library for user interface rendering that has a [very good performance](),
+React is a light library for user interface rendering that has a [very good performance](https://evancz.github.io/react-angular-ember-elm-performance-comparison/),
 also it allows building pages out of components. It will make it possible to replace some parts of a view and **work together with older libraries**. Let's see how:
 
 ### Approximations
@@ -180,7 +180,6 @@ In this case the component instance, mounted by ReactDOM is stored in a variable
 
 ### <a name="option-3">Option 3 - Pub/Sub pattern through jQuery $.Callbacks</a>
 
-// Note: Improve this intro.
 Publish-Subscribe pattern can be very useful for communicating React with jQuery since the actions sent by the communication channels can be sent to those functions subscribed to the channel without knowing anything about the rest of he listeners. Let's see how we could add a simple implementation of the Pub/Sub pattern by a method that can be accessed via jQuery:
 
 ```javascript
@@ -251,7 +250,7 @@ var fetchContacts = function () {
 
 And when publishing to 'addContacts' channel, the contacts are received through the ```onAddContact``` method, changing its state and activating its lifecycle events like ```render``` resulting in an HTML change.
 
-By using this pattern, it is not necessary to store component instances in the module. ¿¿??
+By using this pattern, it is not necessary to store component instances in the module.
 
 ```javascript
 var ContactsTableContainer = App.components.ContactsTableContainer;
