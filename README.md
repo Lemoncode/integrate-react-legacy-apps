@@ -640,3 +640,12 @@ This sampl is based on the previous sample to show how to use ngReact library to
 ## 05.C Angular components & directive
 
 This sample uses how to replace an accordion of a web component based Angular application with a React accordion. it also uses ngReact for libraries communication.
+
+# About Lemoncode
+
+We are a team of long-term experienced freelance developers, established as a group in 2010.
+We specialize in Front End technologies and .NET. [Click here](http://lemoncode.net/services/en/#en-home) to get more info about us.
+
+For the LATAM/Spanish audience we are running an Online Front End Master degree, more info: http://lemoncode.net/master-frontend
+
+
