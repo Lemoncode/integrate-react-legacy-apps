@@ -4,21 +4,22 @@ In this sample we will introduce our first React component. This component will 
 
 ## Let's get started
 
-First of all we'll add `react` and `react-dom` into our app libraries. We manage this with `npm` so we just need to do `npm install` and get this packages.
+First of all we'll add `react`, `react-dom` and `prop-types` into our app libraries. We manage this with `npm` so we just need to do `npm install` and get this packages.
 
 ```shell
-npm install --save react react-dom
+npm install --save react react-dom prop-types
 ```
 
-Next we'll link this dependencies into our `index.html`:
+Next we'll link these dependencies into our `index.html`:
 
 ```html
 ...
 </div>
 
   <script src="./node_modules/jquery/dist/jquery.js"></script>
-  <script src="./node_modules/react/dist/react.js"></script>
-  <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+  <script src="./node_modules/react/umd/react.development.js"></script>
+  <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+  <script src="./node_modules/prop-types/prop-types.js"></script>
 
   <script src="./assets/js/app/App.js"></script>
 ...
@@ -81,10 +82,10 @@ Let's define the validation for contact. This will need two main dependencies, `
 (function initializeContactPropTypes(React, App) {
   'use strict';
 
-  var ContactPropTypes = React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired,
-    phone: React.PropTypes.number.isRequired,
-    email: React.PropTypes.string.isRequired
+  var ContactPropTypes = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    phone: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired
   });
 
   App.PropTypes.ContactPropTypes = ContactPropTypes;
@@ -151,7 +152,7 @@ Then we'll create the `ContactsTableComponent`. It will need a contacts array fr
 
   ContactsTableComponent.displayName = 'ContactsTableComponent';
   ContactsTableComponent.propTypes = {
-    contacts: React.PropTypes.arrayOf(ContactPropTypes)
+    contacts: PropTypes.arrayOf(ContactPropTypes)
   };
 
   App.components.ContactsTableComponent = ContactsTableComponent;
