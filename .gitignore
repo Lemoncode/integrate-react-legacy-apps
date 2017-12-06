@@ -8,3 +8,4 @@ typings/
 .vscode/
 .editorconfig
 yarn.lock
+package-lock.json
