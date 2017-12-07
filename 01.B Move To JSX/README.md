@@ -209,8 +209,9 @@ With these changes we only need to open a command line prompt and type `npm run 
       </div>
 
       <script src="./node_modules/jquery/dist/jquery.js"></script>
-      <script src="./node_modules/react/dist/react.js"></script>
-      <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+      <script src="./node_modules/react/umd/react.development.js"></script>
+      <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+      <script src="./node_modules/prop-types/prop-types.js"></script>
 
       <script src="./dist/js/app/App.js"></script>
       <script src="./dist/js/app/components/ContactPropTypes.js"></script>
