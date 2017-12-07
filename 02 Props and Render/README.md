@@ -69,7 +69,9 @@ Then add <code>jquery-react.<strong>js</strong></code> in our `index.html`file (
 
 ```html
 ...
-<script src="./node_modules/react-dom/dist/react-dom.js"></script>
+<script src="./node_modules/react/umd/react.development.js"></script>
+<script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+<script src="./node_modules/prop-types/prop-types.js"></script>
 <script src="./dist/js/app/plugins/jquery-react.js"></script>
 <script src="./dist/js/app/App.js"></script>
 ...

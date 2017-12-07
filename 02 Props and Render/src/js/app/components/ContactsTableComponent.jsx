@@ -26,7 +26,7 @@
 
   ContactsTableComponent.displayName = 'ContactsTableComponent';
   ContactsTableComponent.propTypes = {
-    contacts: React.PropTypes.arrayOf(ContactPropTypes)
+    contacts: PropTypes.arrayOf(ContactPropTypes)
   };
 
   App.components.ContactsTableComponent = ContactsTableComponent;
