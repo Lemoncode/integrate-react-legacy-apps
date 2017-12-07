@@ -1,10 +1,10 @@
 (function initializeContactPropTypes(React, App) {
   'use strict';
 
-  var ContactPropTypes = React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired,
-    phone: React.PropTypes.number.isRequired,
-    email: React.PropTypes.string.isRequired
+  var ContactPropTypes = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    phone: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired
   });
 
   App.PropTypes.ContactPropTypes = ContactPropTypes;

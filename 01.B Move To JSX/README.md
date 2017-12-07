@@ -1,4 +1,4 @@
-# 01.5 Moving to JSX
+# 01.B Moving to JSX
 
 Most of React projects are written using JSX syntax with ECMAScript2015 and transpiled using Webpack, Rollup, Browserify or some other bundler. In this sample we'll be configuring our project to use a task manager to automatize our transpilation process.
 
@@ -209,8 +209,9 @@ With these changes we only need to open a command line prompt and type `npm run 
       </div>
 
       <script src="./node_modules/jquery/dist/jquery.js"></script>
-      <script src="./node_modules/react/dist/react.js"></script>
-      <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+      <script src="./node_modules/react/umd/react.development.js"></script>
+      <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+      <script src="./node_modules/prop-types/prop-types.js"></script>
 
       <script src="./dist/js/app/App.js"></script>
       <script src="./dist/js/app/components/ContactPropTypes.js"></script>
