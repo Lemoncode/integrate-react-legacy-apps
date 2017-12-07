@@ -19,17 +19,17 @@ We'll create a container component that will be used by our `contactsModule`. Th
   var ContactPropTypes = App.PropTypes.ContactPropTypes;
   var ContactsTableComponent = App.components.ContactsTableComponent;
 
-  var ContactsTableContainer = React.createClass({
-    displayName: 'ContactsTableContainer',
-    getInitialState: function () {
-      return {
-        contacts: []
-      };
-    },
-    render: function () {
+  class ContactsTableContainer extends React.Component {
+    
+    constructor() {
+      super();
+      this.state = { contacts: [] };
+    }
+
+    render() {
       return <ContactsTableComponent contacts={this.state.contacts} />;
     }
-  });
+  }
 
   App.components.ContactsTableContainer = ContactsTableContainer;
 })(window.React, window.App);
