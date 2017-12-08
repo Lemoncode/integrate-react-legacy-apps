@@ -66,7 +66,9 @@ This sample takes as starting point sample _03 Stateful Components_.
 
   ```html
   ...
-  <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+  <script src="./node_modules/react/umd/react.development.js"></script>
+  <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+  <script src="./node_modules/prop-types/prop-types.js"></script>
 
   <script src="./assets/js/app/plugins/jquery-pub-sub.js"></script>
 
@@ -92,7 +94,7 @@ Let's change the `contactsModule.js` implementation to use Pub/Sub pattern:
   })(window.jQuery, window.React, window.ReactDOM, window.App);
   ```
 
-- Next we'll remove `$mountedContactsTableContainer` variable and change `createReactComponents` method definition. We'll also remove `showContacts` method:
+- Next we'll remove `$mountedContactsTableContainer` variable and change `createReactComponents` method definition:
 
   ```jsx
   ...
@@ -170,18 +172,23 @@ Subscribing our `ContactsTableContainer` to a subject is pretty straightforward:
   })(window.jQuery, window.React, window.App);
   ```
 
-- Next we'll create a method to handle new contacts through subscription to `addContacts` subject and set it in it's state:
+- Next we'll create a method to handle new contacts through subscription to `addContacts` subject and set it in its state:
 
   ```javascript
   ...
-  var ContactsTableContainer = React.createClass({
-    displayName: 'ContactsTableContainer',
-    onAddContact: function (contact) {
+  class ContactsTableContainer extends React.Component {
+
+    constructor() {
+      super();
+      this.state = { contacts: [] };
+      this.onAddContact = this.onAddContact.bind(this);
+    }
+
+    onAddContact(contact) {
       this.setState({
         contacts: this.state.contacts.concat(contact)
       });
-    },
-    getInitialState: function () {
+    }
   ...
   ```
 
@@ -189,14 +196,15 @@ Subscribing our `ContactsTableContainer` to a subject is pretty straightforward:
 
   ```javascript
   ...
-  },
-  componentDidMount: function () {
-    $.observe('addContacts').subscribe(this.onAddContact);
-  },
-  componentWillUnmount: function () {
-    $.observe('addContacts').unsubscribe(this.onAddContact);
-  },
-  render: function () {
+    componentDidMount() {
+      $.observe('addContacts').subscribe(this.onAddContact);
+    }
+
+    componentWillUnmount() {
+      $.observe('addContacts').unsubscribe(this.onAddContact);
+    }
+
+    render() {
   ...
   ```
 
