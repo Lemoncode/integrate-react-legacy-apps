@@ -13,7 +13,7 @@
   };
 
   ShowEncoded.propTypes = {
-    encoded: React.PropTypes.string.isRequired
+    encoded: PropTypes.string.isRequired
   };
 
   angular.module('app').value('ShowEncoded', ShowEncoded);
