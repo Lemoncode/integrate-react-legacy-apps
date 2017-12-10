@@ -121,7 +121,7 @@ It's time to add React and our first component.
     };
 
     ShowEncoded.propTypes = {
-      encoded: React.PropTypes.string.isRequired
+      encoded: PropTypes.string.isRequired
     };
 
     angular.module('app').value('ShowEncoded', ShowEncoded);
@@ -148,8 +148,9 @@ It's time to add React and our first component.
       </section>
     </main>
     <script src="./node_modules/angular/angular.js"></script>
-+   <script src="./node_modules/react/dist/react.js"></script>
-+   <script src="./node_modules/react-dom/dist/react-dom.js"></script>
++   <script src="./node_modules/react/umd/react.development.js"></script>
++   <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
++   <script src="./node_modules/prop-types/prop-types.js"></script>
 +   <script src="./node_modules/ngreact/ngReact.js"></script>
     <script src="./dist/app.module.js"></script>
     <script src="./dist/controllers/main.controller.js"></script>
