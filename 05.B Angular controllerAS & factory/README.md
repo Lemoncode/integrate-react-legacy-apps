@@ -7,7 +7,7 @@ This particular sample is an alternative to the previous sample that uses a simp
 
 ## Boilerplate
 
-We'll take as starting point sample [05.B Angular controllerAs & directive](../05.A\ Angular\ controllerAs\ &\ directive).
+We'll take as starting point sample [05.A Angular controllerAs & directive](../05.A\ Angular\ controllerAs\ &\ directive).
 
 ## Applying `reactDirective`
 
@@ -32,7 +32,7 @@ Inside our `ShowEncoded.jsx` component we'll replace the export via `value` and 
   };
 
   ShowEncoded.propTypes = {
-    encoded: React.PropTypes.string.isRequired
+    encoded: PropTypes.string.isRequired
   };
 
 + // AngularJS directive definition
