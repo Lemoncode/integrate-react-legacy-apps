@@ -4,28 +4,32 @@
   var ContactPropTypes = App.PropTypes.ContactPropTypes;
   var ContactsTableComponent = App.components.ContactsTableComponent;
 
-  var ContactsTableContainer = React.createClass({
-    displayName: 'ContactsTableContainer',
-    onAddContact: function (contact) {
+  class ContactsTableContainer extends React.Component {
+
+    constructor() {
+      super();
+      this.state = { contacts: [] };
+      this.onAddContact = this.onAddContact.bind(this);
+    }
+
+    onAddContact(contact) {
       this.setState({
         contacts: this.state.contacts.concat(contact)
       });
-    },
-    componentDidMount: function () {
+    }
+
+    componentDidMount() {
       $.observe('addContacts').subscribe(this.onAddContact);
-    },
-    componentWillUnmount: function () {
+    }
+
+    componentWillUnmount() {
       $.observe('addContacts').unsubscribe(this.onAddContact);
-    },
-    getInitialState: function () {
-      return {
-        contacts: []
-      };
-    },
-    render: function () {
+    }
+
+    render() {
       return <ContactsTableComponent contacts={this.state.contacts} />;
     }
-  });
+  }
 
   App.components.ContactsTableContainer = ContactsTableContainer;
 })(window.jQuery, window.React, window.App);
