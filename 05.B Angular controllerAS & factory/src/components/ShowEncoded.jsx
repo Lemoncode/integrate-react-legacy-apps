@@ -14,7 +14,7 @@
   };
 
   ShowEncoded.propTypes = {
-    encoded: React.PropTypes.string.isRequired
+    encoded: PropTypes.string.isRequired
   };
 
   // AngularJS directive definition
