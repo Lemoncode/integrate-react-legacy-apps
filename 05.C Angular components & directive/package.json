@@ -14,8 +14,9 @@
     "bootstrap": "^3.3.7",
     "jquery": "^3.1.1",
     "ngreact": "^0.3.0",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
     "babel-preset-react": "^6.22.0",

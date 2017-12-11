@@ -314,8 +314,9 @@ Let's add their script references in `index.html`:
 ...
 <page-content/>
 <script src="./node_modules/angular/angular.js"></script>
-<script src="./node_modules/react/dist/react.js"></script>
-<script src="./node_modules/react-dom/dist/react-dom.js"></script>
+<script src="./node_modules/react/umd/react.development.js"></script>
+<script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+<script src="./node_modules/prop-types/prop-types.js"></script>
 <script src="./node_modules/ngreact/ngReact.js"></script>
 <script src="./dist/app.module.js"></script>
 <script src="./dist/components/accordion/accordion.js"></script>
@@ -361,12 +362,12 @@ Let's replace the accordion with a React one. First we'll replace the lowest com
 +
 +   AccordionPanel.displayName = 'AccordionPanel';
 +   AccordionPanel.propTypes = {
-+     active: React.PropTypes.bool,
-+     onSelect: React.PropTypes.func,
-+     feed: React.PropTypes.shape({
-+       id: React.PropTypes.number.isRequired,
-+       heading: React.PropTypes.string,
-+       content: React.PropTypes.string
++     active: PropTypes.bool,
++     onSelect: PropTypes.func,
++     feed: PropTypes.shape({
++       id: PropTypes.number.isRequired,
++       heading: PropTypes.string,
++       content: PropTypes.string
 +     })
 +   };
 -    function AccordionPanel() {
@@ -425,44 +426,44 @@ Now it's time to replace the `Accordion` component by an _container_ component t
 - (function (angular) {
     'use strict';
 
-+   var app = angular.module('app');
-
 +   var Accordion = function (AccordionPanel) {
-+     return React.createClass({
-+       displayName: 'Accordion',
-+       getInitialState: function () {
-+         return {
-+           selected: null
-+         };
-+       },
-+       render: function () {
-+         var feeds = this.props.feeds || ['a', 'b', 'c', 'd'];
-+         var selected = this.state.selected;
-+         var self = this;
-+         return (
-+           <div className="panel-group" role="tablist">
-+             <h1>{this.props.foo}</h1>
-+             {feeds.map(function (feed, index) {
-+               return (
-+                 <AccordionPanel
-+                   active={selected === feed.id}
-+                   onSelect={self.select}
-+                   key={index}
-+                   feed-id={index}
-+                   feed={feed}
-+                 />
-+               );
-+             })}
-+           </div>
-+         );
-+       },
-+       select: function (selected) {
-+         if (selected === this.state.selected) {
-+           selected = null;
-+         }
-+         this.setState({ selected });
-+       }
-+     });
++      return class Accordion extends React.Component {
++
++        constructor(props) {
++          super(props);
++          this.state = { selected: null };
++          this.select = this.select.bind(this);
++        }
++
++        select(selected) {
++          if (selected === this.state.selected) {
++            selected = null;
++          }
++          this.setState({ selected });
++        }
++
++        render() {
++          var feeds = this.props.feeds || ['a', 'b', 'c', 'd'];
++          var selected = this.state.selected;
++          var self = this;
++          return (
++            <div className="panel-group" role="tablist">
++              <h1>{this.props.foo}</h1>
++              {feeds.map(function (feed, index) {
++                return (
++                  <AccordionPanel
++                    active={selected === feed.id}
++                    onSelect={self.select}
++                    key={index}
++                    feed-id={index}
++                    feed={feed}
++                  />
++                );
++              })}
++            </div>
++          );
++        }
++      }
 +   }
 -   function AccordionController() {
 -     var self = this;

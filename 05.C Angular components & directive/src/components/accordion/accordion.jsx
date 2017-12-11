@@ -1,16 +1,24 @@
 (function (React, angular) {
   'use strict';
 
-
   var Accordion = function (AccordionPanel) {
-    return React.createClass({
-      displayName: 'Accordion',
-      getInitialState: function () {
-        return {
-          selected: null
-        };
-      },
-      render: function () {
+
+    return class Accordion extends React.Component {
+
+      constructor(props) {
+        super(props);
+        this.state = { selected: null };
+        this.select = this.select.bind(this);
+      }
+
+      select(selected) {
+        if (selected === this.state.selected) {
+          selected = null;
+        }
+        this.setState({ selected });
+      }
+
+      render() {
         var feeds = this.props.feeds || ['a', 'b', 'c', 'd'];
         var selected = this.state.selected;
         var self = this;
@@ -30,14 +38,8 @@
             })}
           </div>
         );
-      },
-      select: function (selected) {
-        if (selected === this.state.selected) {
-          selected = null;
-        }
-        this.setState({ selected });
       }
-    });
+    }
   }
 
   angular
