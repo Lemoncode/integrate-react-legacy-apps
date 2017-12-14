@@ -23,12 +23,12 @@
 
   AccordionPanel.displayName = 'AccordionPanel';
   AccordionPanel.propTypes = {
-    active: React.PropTypes.bool,
-    onSelect: React.PropTypes.func,
-    feed: React.PropTypes.shape({
-      id: React.PropTypes.number.isRequired,
-      heading: React.PropTypes.string,
-      content: React.PropTypes.string
+    active: PropTypes.bool,
+    onSelect: PropTypes.func,
+    feed: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      heading: PropTypes.string,
+      content: PropTypes.string
     })
   };
 
